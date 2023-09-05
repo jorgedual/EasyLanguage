@@ -1,0 +1,88 @@
+{
+  "name": "easy",
+  "displayName": "Easy Language",
+  "description": "Support for Easy language",
+  "version": "0.0.1",
+  "publisher": "your-name",
+  "engines": {
+      "vscode": "^1.52.0"
+  },
+  "categories": [
+      "Programming Languages"
+  ],
+  "activationEvents": [
+    "onLanguage: easy"
+],
+
+  "main": "./extension.js",
+  "contributes": {
+
+    "snippets": [
+        {
+            "language": "easy",
+            "path": "./easySnippets.json"
+        }
+    ],
+      "languages": [{
+          "id": "easy",
+          "aliases": ["Easy", "easy"],
+          "extensions": [".easy"],
+          "configuration": "./language-configuration.json"
+      }],
+      "grammars": [{
+          "language": "easy",
+          "scopeName": "source.easy",
+          "path": "./syntaxes/easy.tmLanguage.json"
+      }],
+      "themes": [{
+          "label": "Easy",
+          "uiTheme": "vs-dark",
+          "path": "./themes/easy-color-theme.json"
+      }],
+      "keybindings": [
+        
+        {
+        "command": "extension.insertText",
+        "key": "ctrl+alt+d",
+        "when": "editorTextFocus"
+         },
+
+        {
+            "command": "extension.insertSquare",
+            "key": "ctrl+alt+i",
+            "when": "editorTextFocus"
+        },
+
+        {
+            "command": "extension.insertCurrentDate",
+            "key": "ctrl+alt+f",
+            "when": "editorTextFocus"
+             }
+
+    ],
+
+    "commands": [
+        {
+            "command": "extension.insertText",
+            "title": "Insert Text"
+        },
+
+        {
+            "command": "extension.insertSquare",
+            "title": "Insert Square"
+        }
+    ]
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "node ./test/runTest.js"
+  },
+  "devDependencies": {
+      "typescript": "^4.1.2",
+      "vscode": "^1.1.37",
+      "tslint": "^5.0.0",
+      "@types/node": "^14.14.10",
+      "@types/mocha": "^8.0.4"
+  }
+}

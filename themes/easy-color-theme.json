@@ -1,0 +1,32 @@
+{
+    "type": "dark",
+    "colors": {},
+    "tokenColors": [
+        
+        
+
+        {
+            "scope": "keyword.control.cuadro.easy",
+            "settings": {
+                "foreground": "#FFF493",
+                "fontStyle": "bold",
+    
+        
+
+            }
+        },
+
+        {
+            "scope": "keyword.control.aster.easy",
+            "settings": {
+                "foreground": "#E5A045",
+                "fontStyle": "bold",
+    
+        
+
+            }
+        }
+
+        
+    ]
+}

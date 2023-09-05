@@ -1,0 +1,9 @@
+{
+    "Decorative Comment Block": {
+        "prefix": "/co",
+        "body": [
+            "/******************************************************************************/"
+        ],
+        "description": "Inserta un bloque de comentario decorativo."
+    }
+}

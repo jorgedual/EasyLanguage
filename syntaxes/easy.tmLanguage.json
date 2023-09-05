@@ -1,0 +1,55 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "easyLanguage",
+	"patterns": [
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings"
+		},
+		
+
+		{
+			"match": "□",
+			"name":"keyword.control.cuadro.easy"
+		},
+
+		{
+			"match": "•",
+			"name":"keyword.control.cuadro.easy"
+		},
+		{
+			"match": ">",
+			"name":"keyword.control.cuadro.easy"
+		},
+
+		{
+			"match": "-",
+			"name":"keyword.control.cuadro.easy"
+		}
+
+	
+
+	],
+	"repository": {
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.control.easy",
+				"match": "\\b(if|while|for|return)\\b"
+			}]
+		},
+		"strings": {
+			"name": "string.quoted.double.easy",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.easy",
+					"match": "\\\\."
+				}
+			]
+		}
+	},
+	"scopeName": "source.easy"
+}
