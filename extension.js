@@ -54,6 +54,8 @@ function activate(context) {
 exports.activate = activate;
 
 /*Constantes de colores */
+
+// Tema:
 const temaDecoration = vscode.window.createTextEditorDecorationType({
   backgroundColor: "#0C66E4",
   color: "#FFF7D6",
@@ -62,59 +64,70 @@ const temaDecoration = vscode.window.createTextEditorDecorationType({
   fontStyle: "italic",
 });
 
+// Texto >>
 const nuevoTextoDecoration = vscode.window.createTextEditorDecorationType({
-  textDecoration: "white underline;",
-  color: "white",
+  textDecoration: "#FF2D55 underline;",
+  color: "#FF2D55",
   fontWeight: 800,
 });
 
+// cuando quedo listo
 const checkDecoration = vscode.window.createTextEditorDecorationType({
   textDecoration: "line-through",
-  color: "#51FB15",
+  fontWeight: 800,
+  color: "#018E42",
 });
 
+// @
 const arrobaDecoration = vscode.window.createTextEditorDecorationType({
   backgroundColor: "#0F7FBE",
   color: "white",
   borderRadius: "4px",
 });
 
+// #validar
 const validarDecoration = vscode.window.createTextEditorDecorationType({
   backgroundColor: "#E74444",
-  color: "#282A36",
+  color: "#ffffff",
   borderRadius: "4px",
 });
 
+// #check
 const checkDosDecoration = vscode.window.createTextEditorDecorationType({
   backgroundColor: "#51FB15",
   color: "#282A36",
   borderRadius: "4px",
 });
 
+// #alta
 const altaDecoration = vscode.window.createTextEditorDecorationType({
   backgroundColor: "#E74444",
   color: "black",
 });
 
+// #media
 const mediaDecoration = vscode.window.createTextEditorDecorationType({
   backgroundColor: "#E5A045",
   color: "black",
 });
 
+//Fecha
 const fechaDecoration = vscode.window.createTextEditorDecorationType({
   backgroundColor: "#F0F2F4",
   color: "#2C3A51",
   borderRadius: "4px",
 });
 
+// ##
 const subTituloUnoDecoration = vscode.window.createTextEditorDecorationType({
-  backgroundColor: "#DEC90F",
-  fontWeight: 600,
-  color: "black",
+  backgroundColor: "#FFF493",
+  fontWeight: 800,
+  color: "#1A1A1A",
 });
 
+// ###
 const subTituloDosDecoration = vscode.window.createTextEditorDecorationType({
-  backgroundColor: "#FFF493",
+  backgroundColor: "#38F5B1",
   fontWeight: 800,
   color: "#1A1A1A",
 });
@@ -123,14 +136,13 @@ const comentarioUnoDecoration = vscode.window.createTextEditorDecorationType({
   backgroundColor: "#E9F2FF",
   color: "#0055CC",
   fontWeight: 800,
-  color: "white",
   borderRadius: "4px",
 });
 
 const comentarioDosDecoration = vscode.window.createTextEditorDecorationType({
-  backgroundColor: "#686C81",
+  backgroundColor: "#B3B4BB",
   fontWeight: 800,
-  color: "black",
+  color: "#2C3A51",
 });
 
 const comentarioTresDecoration = vscode.window.createTextEditorDecorationType({
@@ -228,9 +240,9 @@ function updateDecorations() {
   }
   activeEditor.setDecorations(checkDecoration, checkDecorations);
 
-  // Decoraciones para "arroba - @:"
+  // Decoraciones para "arroba - /@:"
   const arrobaDecorations = [];
-  const arrobaRegEx = /@(\w+)/g;
+  const arrobaRegEx = /\/@(\w+)/g;
   while ((match = arrobaRegEx.exec(text))) {
     const startPos = activeEditor.document.positionAt(match.index);
     const endPos = activeEditor.document.positionAt(
@@ -365,7 +377,7 @@ function updateDecorations() {
 
   // Decoraciones para "comentario 3:"
   const comentarioTresDecorations = [];
-  const comentarioTresRegEx = /\/\/(.*)$/gm;
+  const comentarioTresRegEx = /\/\/\/(.*)$/gm;
   while ((match = comentarioTresRegEx.exec(text))) {
     const startPos = activeEditor.document.positionAt(match.index);
     const endPos = activeEditor.document.positionAt(
