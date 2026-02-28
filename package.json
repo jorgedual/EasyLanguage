@@ -1,19 +1,35 @@
 {
   "name": "easy",
   "displayName": "Easy Language",
-  "description": "Support for Easy language - Efficient note-taking with colors and shortcuts",
-  "version": "0.0.2",
-  "publisher": "your-name",
+  "description": "A VS Code language for visual note-taking with colored tags (#todo, #doing, #done), formatted titles (#, ##, ###), date insertion, and keyboard shortcuts — designed for fast, organized plain-text notes.",
+  "version": "0.1.0",
+  "publisher": "JorgeDuarte",
+  "author": {
+    "name": "Jorge Duarte"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tu-usuario/EasyLanguage"
+  },
   "engines": {
-      "vscode": "^1.52.0"
+    "vscode": "^1.52.0"
   },
   "categories": [
-      "Programming Languages"
+    "Programming Languages",
+    "Other"
+  ],
+  "keywords": [
+    "notes",
+    "todo",
+    "productivity",
+    "easy",
+    "color",
+    "task management"
   ],
   "activationEvents": [
-    "*"
+    "onLanguage:easy"
   ],
-
   "main": "./extension.js",
   "contributes": {
 
@@ -34,11 +50,18 @@
           "scopeName": "source.easy",
           "path": "./syntaxes/easy.tmLanguage.json"
       }],
-      "themes": [{
-          "label": "Easy",
-          "uiTheme": "vs-dark",
-          "path": "./themes/easy-color-theme.json"
-      }],
+      "themes": [
+          {
+              "label": "Easy Dark",
+              "uiTheme": "vs-dark",
+              "path": "./themes/easy-color-theme.json"
+          },
+          {
+              "label": "Easy Light",
+              "uiTheme": "vs",
+              "path": "./themes/easy-light-color-theme.json"
+          }
+      ],
       "keybindings": [
         
         {

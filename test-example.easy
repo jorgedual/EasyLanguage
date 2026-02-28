@@ -1,10 +1,37 @@
 Tema: Prueba COMPLETA de la extensión Easy Language
+/******************************************************************************/
 
-## Sección de pruebas de colores
+fecha: 2026-02-28
+
+Esta es una nota que se está realizando de manera maravillosa para verificar el formato de texto normal.
+lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem.
+
+
+□  **Esta es una actividad** #alta
+□  Esta es
+
+fecha: 2026-02-28
+
+
+
+🗸 □ Este es un itme de actividad. #alta
+🗸 □ Esta es una tarea que se tiene que realizar 
+## Sección de pruebas de colores 
+Este es el color de un texto que se está generando de manera normal, sin formato especial.
+**Este es un texto en negrita que se está generando para verificar el formato de negrita.
+
+
+
+## Título de Segundo Nivel
+
+Este es un titulo de segundo nivel que se está e
+□ Este es un estado
+□ Este es otro estado
+□ Este es otro item mas
 
 ### Subsección 1
 
-fecha: 2026-02-28
+}
 
 #todo Completar la documentación
 #doing Revisando el código
@@ -69,3 +96,13 @@ Lista completa para verificar:
 - 🗸 debe tener tachado verde
 
 /******************************************************************************/
+
+
+fecha: 2026-02-28
+
+/******************************************************************************/
+
+
+Esta es una nota que se está estableciendo de manera normal
+
+Tema: 

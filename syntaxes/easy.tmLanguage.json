@@ -3,59 +3,10 @@
 	"name": "easyLanguage",
 	"patterns": [
 		{
-			"include": "#tema"
-		},
-		{
-			"include": "#fecha"
-		},
-		{
-			"include": "#headers"
-		},
-		{
 			"include": "#tags"
-		},
-		{
-			"include": "#comments"
-		},
-		{
-			"include": "#mentions"
-		},
-		{
-			"include": "#checkmarks"
-		},
-		{
-			"include": "#highlighted"
 		}
 	],
 	"repository": {
-		"tema": {
-			"patterns": [
-				{
-					"match": "^Tema:.*$",
-					"name": "entity.name.section.tema.easy"
-				}
-			]
-		},
-		"fecha": {
-			"patterns": [
-				{
-					"match": "fecha:.*$",
-					"name": "comment.line.fecha.easy"
-				}
-			]
-		},
-		"headers": {
-			"patterns": [
-				{
-					"match": "^###\\s+.*$",
-					"name": "markup.heading.3.easy"
-				},
-				{
-					"match": "^##\\s+.*$",
-					"name": "markup.heading.2.easy"
-				}
-			]
-		},
 		"tags": {
 			"patterns": [
 				{
@@ -89,50 +40,6 @@
 				{
 					"match": "#check\\b",
 					"name": "keyword.control.check.easy"
-				}
-			]
-		},
-		"comments": {
-			"patterns": [
-				{
-					"match": "^/\\*\\*+\\*/\\s*$",
-					"name": "comment.block.decoration1.easy"
-				},
-				{
-					"match": "/\\+.*?\\+/",
-					"name": "comment.block.decoration2.easy"
-				},
-				{
-					"match": "///.*$",
-					"name": "comment.line.triple-slash.easy"
-				}
-			]
-		},
-		"mentions": {
-			"patterns": [
-				{
-					"match": "/@\\w+",
-					"name": "entity.name.tag.mention.easy"
-				}
-			]
-		},
-		"checkmarks": {
-			"patterns": [
-				{
-					"match": "🗸.*$",
-					"name": "markup.deleted.checkmark.easy"
-				},
-				{
-					"match": "□",
-					"name": "punctuation.definition.checkbox.easy"
-				}
-			]
-		},
-		"highlighted": {
-			"patterns": [
-				{
-					"match": ">>.*$",
-					"name": "markup.bold.highlighted.easy"
 				}
 			]
 		}
