@@ -1,8 +1,8 @@
 {
   "name": "easy",
   "displayName": "Easy Language",
-  "description": "Support for Easy language",
-  "version": "0.0.1",
+  "description": "Support for Easy language - Efficient note-taking with colors and shortcuts",
+  "version": "0.0.2",
   "publisher": "your-name",
   "engines": {
       "vscode": "^1.52.0"
@@ -11,8 +11,8 @@
       "Programming Languages"
   ],
   "activationEvents": [
-    "onLanguage: easy"
-],
+    "onLanguage:easy"
+  ],
 
   "main": "./extension.js",
   "contributes": {

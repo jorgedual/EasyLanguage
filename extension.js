@@ -53,7 +53,37 @@ function activate(context) {
 }
 exports.activate = activate;
 
+function deactivate() {}
+exports.deactivate = deactivate;
+
 /*Constantes de colores */
+
+
+
+// #todo
+const todoDecoration = vscode.window.createTextEditorDecorationType({
+  backgroundColor: "#FFD700", // Amarillo
+  color: "black",
+  borderRadius: "4px",
+  fontWeight: "bold",
+});
+
+// #doing
+const doingDecoration = vscode.window.createTextEditorDecorationType({
+  backgroundColor: "#1E90FF", // Azul
+  color: "white",
+  borderRadius: "4px",
+  fontWeight: "bold",
+});
+
+// #done
+const doneDecoration = vscode.window.createTextEditorDecorationType({
+  backgroundColor: "#32CD32", // Verde
+  color: "white",
+  borderRadius: "4px",
+  fontWeight: "bold",
+});
+
 
 // Tema:
 const temaDecoration = vscode.window.createTextEditorDecorationType({
@@ -105,6 +135,13 @@ const altaDecoration = vscode.window.createTextEditorDecorationType({
   color: "black",
 });
 
+
+// #task
+const taskDecoration = vscode.window.createTextEditorDecorationType({
+  backgroundColor: "#FFD700",
+  color: "#1A1A1A",
+});
+
 // #media
 const mediaDecoration = vscode.window.createTextEditorDecorationType({
   backgroundColor: "#E5A045",
@@ -133,8 +170,8 @@ const subTituloDosDecoration = vscode.window.createTextEditorDecorationType({
 });
 
 const comentarioUnoDecoration = vscode.window.createTextEditorDecorationType({
-  backgroundColor: "#E9F2FF",
-  color: "#0055CC",
+  backgroundColor: "#F0F2F4",
+  color: "#2C3A51",
   fontWeight: 800,
   borderRadius: "4px",
 });
@@ -320,6 +357,23 @@ function updateDecorations() {
   }
   activeEditor.setDecorations(altaDecoration, altaDecorations);
 
+  //Decoraciones para #task
+
+  const taskDecorations = [];
+  const taskRegEx = /#task/g;
+  while ((match = taskRegEx.exec(text))) {
+    const startPos = activeEditor.document.positionAt(match.index);
+    const endPos = activeEditor.document.positionAt(
+      match.index + match[0].length
+    );
+    const decoration = {
+      range: new vscode.Range(startPos, endPos),
+      hoverMessage: "task",
+    };
+    taskDecorations.push(decoration);
+  }
+  activeEditor.setDecorations(taskDecoration, taskDecorations);
+
   // Decoraciones para "#media"
   const mediaDecorations = [];
   const mediaRegEx = /#media/g;
@@ -394,6 +448,48 @@ function updateDecorations() {
     comentarioTresDecorations
   );
 
+  // Decoraciones para "#todo"
+  const todoDecorations = [];
+  const todoRegEx = /#todo/g;
+  while ((match = todoRegEx.exec(text))) {
+    const startPos = activeEditor.document.positionAt(match.index);
+    const endPos = activeEditor.document.positionAt(match.index + match[0].length);
+    const decoration = { 
+      range: new vscode.Range(startPos, endPos), 
+      hoverMessage: "Tarea pendiente" 
+    };
+    todoDecorations.push(decoration);
+  }
+  activeEditor.setDecorations(todoDecoration, todoDecorations);
+
+  // Decoraciones para "#doing"
+  const doingDecorations = [];
+  const doingRegEx = /#doing/g;
+  while ((match = doingRegEx.exec(text))) {
+    const startPos = activeEditor.document.positionAt(match.index);
+    const endPos = activeEditor.document.positionAt(match.index + match[0].length);
+    const decoration = { 
+      range: new vscode.Range(startPos, endPos), 
+      hoverMessage: "En progreso" 
+    };
+    doingDecorations.push(decoration);
+  }
+  activeEditor.setDecorations(doingDecoration, doingDecorations);
+
+  // Decoraciones para "#done"
+  const doneDecorations = [];
+  const doneRegEx = /#done/g;
+  while ((match = doneRegEx.exec(text))) {
+    const startPos = activeEditor.document.positionAt(match.index);
+    const endPos = activeEditor.document.positionAt(match.index + match[0].length);
+    const decoration = { 
+      range: new vscode.Range(startPos, endPos), 
+      hoverMessage: "Completado" 
+    };
+    doneDecorations.push(decoration);
+  }
+  activeEditor.setDecorations(doneDecoration, doneDecorations);
+
   //Cierre
 }
 
@@ -466,3 +562,6 @@ function insertCurrentDate() {
     editBuilder.insert(currentPosition, currentDate);
   });
 }
+
+function deactivate() {}
+exports.deactivate = deactivate;

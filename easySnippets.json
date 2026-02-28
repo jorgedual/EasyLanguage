@@ -5,5 +5,22 @@
             "/******************************************************************************/"
         ],
         "description": "Inserta un bloque de comentario decorativo."
-    }
+    },
+
+    "Decorative Comment Block 2": {
+        "prefix": "/cruz",
+        "body": [
+            "/+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++/"
+        ],
+        "description": "Inserta un bloque de comentario decorativo."
+    },
+
+
+    "Insert Current Date": {
+        "prefix": "/cd",
+        "body": [
+            "fecha: ${CURRENT_YEAR}/${CURRENT_MONTH}/${CURRENT_DATE}"
+        ],
+        "description": "Inserta la fecha actual."
+    },
 }

@@ -1,0 +1,50 @@
+Tema: Prueba de la extensión Easy Language
+
+## Sección de pruebas de colores
+
+### Subsección 1
+
+fecha: 2026-02-28
+
+#todo Completar la documentación
+#doing Revisando el código
+#done Instalación completada
+
+#alta Prioridad alta
+#media Prioridad media
+#task Tarea general
+
+#validar Revisar este punto
+#check Todo verificado
+
+>> Texto importante destacado
+
+/@usuario Mención a usuario
+
+🗸 Tarea completada con check
+□ Tarea pendiente
+
+/*******************************************************************************/
+Comentario decorativo 1
+/*******************************************************************************/
+
+/+ Comentario tipo 2 +/
+
+/// Comentario tipo 3 con triple slash
+
+---
+
+Tema: Segundo tema de prueba
+
+## Prueba de atajos de teclado
+
+Presiona:
+- Ctrl+Alt+D para insertar 🗸
+- Ctrl+Alt+I para insertar □
+- Ctrl+Alt+F para insertar la fecha actual
+
+### Notas finales
+
+#todo Probar todos los atajos
+#doing Documentando funcionalidades
+#done Correcciones aplicadas
