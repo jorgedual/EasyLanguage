@@ -3,50 +3,136 @@
 	"name": "easyLanguage",
 	"patterns": [
 		{
-			"include": "#keywords"
+			"include": "#tema"
 		},
 		{
-			"include": "#strings"
-		},
-		
-
-		{
-			"match": "□",
-			"name":"keyword.control.cuadro.easy"
-		},
-
-		{
-			"match": "•",
-			"name":"keyword.control.cuadro.easy"
+			"include": "#fecha"
 		},
 		{
-			"match": ">",
-			"name":"keyword.control.cuadro.easy"
+			"include": "#headers"
 		},
-
 		{
-			"match": "-",
-			"name":"keyword.control.cuadro.easy"
+			"include": "#tags"
+		},
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#mentions"
+		},
+		{
+			"include": "#checkmarks"
+		},
+		{
+			"include": "#highlighted"
 		}
-
-	
-
 	],
 	"repository": {
-		"keywords": {
-			"patterns": [{
-				"name": "keyword.control.easy",
-				"match": "\\b(if|while|for|return)\\b"
-			}]
-		},
-		"strings": {
-			"name": "string.quoted.double.easy",
-			"begin": "\"",
-			"end": "\"",
+		"tema": {
 			"patterns": [
 				{
-					"name": "constant.character.escape.easy",
-					"match": "\\\\."
+					"match": "^Tema:.*$",
+					"name": "entity.name.section.tema.easy"
+				}
+			]
+		},
+		"fecha": {
+			"patterns": [
+				{
+					"match": "fecha:.*$",
+					"name": "comment.line.fecha.easy"
+				}
+			]
+		},
+		"headers": {
+			"patterns": [
+				{
+					"match": "^###\\s+.*$",
+					"name": "markup.heading.3.easy"
+				},
+				{
+					"match": "^##\\s+.*$",
+					"name": "markup.heading.2.easy"
+				}
+			]
+		},
+		"tags": {
+			"patterns": [
+				{
+					"match": "#todo\\b",
+					"name": "keyword.control.todo.easy"
+				},
+				{
+					"match": "#doing\\b",
+					"name": "keyword.control.doing.easy"
+				},
+				{
+					"match": "#done\\b",
+					"name": "keyword.control.done.easy"
+				},
+				{
+					"match": "#alta\\b",
+					"name": "keyword.control.alta.easy"
+				},
+				{
+					"match": "#media\\b",
+					"name": "keyword.control.media.easy"
+				},
+				{
+					"match": "#task\\b",
+					"name": "keyword.control.task.easy"
+				},
+				{
+					"match": "#validar\\b",
+					"name": "keyword.control.validar.easy"
+				},
+				{
+					"match": "#check\\b",
+					"name": "keyword.control.check.easy"
+				}
+			]
+		},
+		"comments": {
+			"patterns": [
+				{
+					"match": "^/\\*\\*+\\*/\\s*$",
+					"name": "comment.block.decoration1.easy"
+				},
+				{
+					"match": "/\\+.*?\\+/",
+					"name": "comment.block.decoration2.easy"
+				},
+				{
+					"match": "///.*$",
+					"name": "comment.line.triple-slash.easy"
+				}
+			]
+		},
+		"mentions": {
+			"patterns": [
+				{
+					"match": "/@\\w+",
+					"name": "entity.name.tag.mention.easy"
+				}
+			]
+		},
+		"checkmarks": {
+			"patterns": [
+				{
+					"match": "🗸.*$",
+					"name": "markup.deleted.checkmark.easy"
+				},
+				{
+					"match": "□",
+					"name": "punctuation.definition.checkbox.easy"
+				}
+			]
+		},
+		"highlighted": {
+			"patterns": [
+				{
+					"match": ">>.*$",
+					"name": "markup.bold.highlighted.easy"
 				}
 			]
 		}

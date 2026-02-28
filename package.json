@@ -11,7 +11,7 @@
       "Programming Languages"
   ],
   "activationEvents": [
-    "onLanguage:easy"
+    "*"
   ],
 
   "main": "./extension.js",
@@ -64,12 +64,17 @@
     "commands": [
         {
             "command": "extension.insertText",
-            "title": "Insert Text"
+            "title": "Insert Check Mark"
         },
 
         {
             "command": "extension.insertSquare",
             "title": "Insert Square"
+        },
+
+        {
+            "command": "extension.insertCurrentDate",
+            "title": "Insert Current Date"
         }
     ]
   },

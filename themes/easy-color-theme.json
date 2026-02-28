@@ -2,31 +2,154 @@
     "type": "dark",
     "colors": {},
     "tokenColors": [
-        
-        
-
         {
-            "scope": "keyword.control.cuadro.easy",
+            "scope": "entity.name.section.tema.easy",
             "settings": {
-                "foreground": "#FFF493",
-                "fontStyle": "bold",
-    
-        
-
+                "foreground": "#FFF7D6",
+                "background": "#0C66E4",
+                "fontStyle": "bold italic"
             }
         },
-
         {
-            "scope": "keyword.control.aster.easy",
+            "scope": "comment.line.fecha.easy",
             "settings": {
-                "foreground": "#E5A045",
-                "fontStyle": "bold",
-    
-        
-
+                "foreground": "#E0E0E0",
+                "background": "#444444",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "markup.heading.2.easy",
+            "settings": {
+                "foreground": "#000000",
+                "background": "#FFF493",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "markup.heading.3.easy",
+            "settings": {
+                "foreground": "#000000",
+                "background": "#38F5B1",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "keyword.control.todo.easy",
+            "settings": {
+                "foreground": "#000000",
+                "background": "#FFD700",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "keyword.control.doing.easy",
+            "settings": {
+                "foreground": "#FFFFFF",
+                "background": "#1E90FF",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "keyword.control.done.easy",
+            "settings": {
+                "foreground": "#FFFFFF",
+                "background": "#32CD32",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "keyword.control.alta.easy",
+            "settings": {
+                "foreground": "#FFFFFF",
+                "background": "#E74444",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "keyword.control.media.easy",
+            "settings": {
+                "foreground": "#000000",
+                "background": "#E5A045",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "keyword.control.task.easy",
+            "settings": {
+                "foreground": "#1A1A1A",
+                "background": "#FFD700",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "keyword.control.validar.easy",
+            "settings": {
+                "foreground": "#FFFFFF",
+                "background": "#E74444",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "keyword.control.check.easy",
+            "settings": {
+                "foreground": "#282A36",
+                "background": "#51FB15",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "comment.block.decoration1.easy",
+            "settings": {
+                "foreground": "#FFFFFF",
+                "background": "#555555",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "comment.block.decoration2.easy",
+            "settings": {
+                "foreground": "#FFFFFF",
+                "background": "#666666",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "comment.line.triple-slash.easy",
+            "settings": {
+                "foreground": "#FFFFFF",
+                "background": "#777777",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "entity.name.tag.mention.easy",
+            "settings": {
+                "foreground": "#FFFFFF",
+                "background": "#0F7FBE",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "markup.deleted.checkmark.easy",
+            "settings": {
+                "foreground": "#018E42",
+                "fontStyle": "bold strikethrough"
+            }
+        },
+        {
+            "scope": "punctuation.definition.checkbox.easy",
+            "settings": {
+                "foreground": "#FFF493",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "markup.bold.highlighted.easy",
+            "settings": {
+                "foreground": "#FF2D55",
+                "fontStyle": "bold underline"
             }
         }
-
-        
     ]
 }

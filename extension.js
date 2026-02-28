@@ -1,17 +1,27 @@
 const vscode = require("vscode");
 
 let activeEditor;
+let outputChannel;
+
 function activate(context) {
+  // Crear un canal de output para logs
+  outputChannel = vscode.window.createOutputChannel("Easy Language");
+  outputChannel.appendLine('[Easy] Extension activating...');
+  outputChannel.show();
+  
   activeEditor = vscode.window.activeTextEditor;
 
   // Actualiza las decoraciones al abrir la extensión y cuando cambies el editor activo
   if (activeEditor) {
+    outputChannel.appendLine('[Easy] Initial editor: ' + activeEditor.document.fileName);
+    outputChannel.appendLine('[Easy] Language: ' + activeEditor.document.languageId);
     updateDecorations();
   }
   vscode.window.onDidChangeActiveTextEditor(
     (editor) => {
       activeEditor = editor;
-      if (editor) {
+      if (editor && editor.document.languageId === 'easy') {
+        outputChannel.appendLine('[Easy] Switched to .easy file: ' + editor.document.fileName);
         updateDecorations();
       }
     },
@@ -22,7 +32,10 @@ function activate(context) {
   // Actualiza las decoraciones cuando el contenido del archivo cambia
   vscode.workspace.onDidChangeTextDocument(
     (event) => {
-      if (activeEditor && event.document === activeEditor.document) {
+      // Solo procesar si es un archivo .easy para evitar bucles infinitos con el OUTPUT
+      if (activeEditor && 
+          event.document === activeEditor.document &&
+          event.document.languageId === 'easy') {
         updateDecorations();
       }
     },
@@ -50,6 +63,8 @@ function activate(context) {
     insertCurrentDate
   );
   context.subscriptions.push(disposableTres);
+
+  outputChannel.appendLine('[Easy] Extension activated successfully!');
 }
 exports.activate = activate;
 
@@ -89,22 +104,22 @@ const doneDecoration = vscode.window.createTextEditorDecorationType({
 const temaDecoration = vscode.window.createTextEditorDecorationType({
   backgroundColor: "#0C66E4",
   color: "#FFF7D6",
-  borderRadius: "4px",
-  fontWeight: "800",
+  fontWeight: "bold",
   fontStyle: "italic",
+  isWholeLine: true,
 });
 
 // Texto >>
 const nuevoTextoDecoration = vscode.window.createTextEditorDecorationType({
-  textDecoration: "#FF2D55 underline;",
   color: "#FF2D55",
-  fontWeight: 800,
+  textDecoration: "underline",
+  fontWeight: "bold",
 });
 
-// cuando quedo listo
+// cuando quedo listo (🗸)
 const checkDecoration = vscode.window.createTextEditorDecorationType({
   textDecoration: "line-through",
-  fontWeight: 800,
+  fontWeight: "bold",
   color: "#018E42",
 });
 
@@ -112,7 +127,7 @@ const checkDecoration = vscode.window.createTextEditorDecorationType({
 const arrobaDecoration = vscode.window.createTextEditorDecorationType({
   backgroundColor: "#0F7FBE",
   color: "white",
-  borderRadius: "4px",
+  fontWeight: "bold",
 });
 
 // #validar
@@ -150,42 +165,46 @@ const mediaDecoration = vscode.window.createTextEditorDecorationType({
 
 //Fecha
 const fechaDecoration = vscode.window.createTextEditorDecorationType({
-  backgroundColor: "#F0F2F4",
-  color: "#2C3A51",
+  backgroundColor: "#444444",
+  color: "#E0E0E0",
+  fontWeight: "bold",
   borderRadius: "4px",
 });
 
 // ##
 const subTituloUnoDecoration = vscode.window.createTextEditorDecorationType({
   backgroundColor: "#FFF493",
-  fontWeight: 800,
-  color: "#1A1A1A",
+  fontWeight: "bold",
+  color: "#000000",
+  isWholeLine: true,
 });
 
 // ###
 const subTituloDosDecoration = vscode.window.createTextEditorDecorationType({
   backgroundColor: "#38F5B1",
-  fontWeight: 800,
-  color: "#1A1A1A",
+  fontWeight: "bold",
+  color: "#000000",
+  isWholeLine: true,
 });
 
 const comentarioUnoDecoration = vscode.window.createTextEditorDecorationType({
-  backgroundColor: "#F0F2F4",
-  color: "#2C3A51",
-  fontWeight: 800,
+  backgroundColor: "#555555",
+  color: "#FFFFFF",
+  fontWeight: "bold",
   borderRadius: "4px",
+  isWholeLine: true,
 });
 
 const comentarioDosDecoration = vscode.window.createTextEditorDecorationType({
-  backgroundColor: "#B3B4BB",
-  fontWeight: 800,
-  color: "#2C3A51",
+  backgroundColor: "#666666",
+  fontWeight: "bold",
+  color: "#FFFFFF",
 });
 
 const comentarioTresDecoration = vscode.window.createTextEditorDecorationType({
-  backgroundColor: "#AAA9A9",
-  fontWeight: 800,
-  color: "black",
+  backgroundColor: "#777777",
+  fontWeight: "bold",
+  color: "#FFFFFF",
 });
 
 /*cierre de constantes de colores */
@@ -194,6 +213,15 @@ function updateDecorations() {
   if (!activeEditor) {
     return;
   }
+
+  // Solo aplicar decoraciones en archivos .easy
+  if (activeEditor.document.languageId !== 'easy') {
+    return; // Salir silenciosamente si no es un archivo .easy
+  }
+
+  // Log único para confirmar que estamos decorando
+  outputChannel.appendLine('[Easy] Applying decorations... (file: ' + activeEditor.document.fileName + ')');
+
   const text = activeEditor.document.getText();
 
   // Decoraciones para "Tema:"
@@ -229,25 +257,9 @@ function updateDecorations() {
   }
   activeEditor.setDecorations(nuevoTextoDecoration, nuevoTextoDecorations);
 
-  // Decoraciones para "Subtitulo1 - ##:"
-  const subTituloUnoDecorations = [];
-  const subTituloUnoRegEx = /##(.*)/g;
-  while ((match = subTituloUnoRegEx.exec(text))) {
-    const startPos = activeEditor.document.positionAt(match.index);
-    const endPos = activeEditor.document.positionAt(
-      match.index + match[0].length
-    );
-    const decoration = {
-      range: new vscode.Range(startPos, endPos),
-      hoverMessage: "Check",
-    };
-    subTituloUnoDecorations.push(decoration);
-  }
-  activeEditor.setDecorations(subTituloUnoDecoration, subTituloUnoDecorations);
-
-  // Decoraciones para "Subtitulo2 - ###:"
+  // Decoraciones para "Subtitulo2 - ###:"  (PRIMERO ### para evitar conflictos)
   const subTituloDosDecorations = [];
-  const subTituloDosRegEx = /###(.*)/g;
+  const subTituloDosRegEx = /^###(.*)$/gm;
   while ((match = subTituloDosRegEx.exec(text))) {
     const startPos = activeEditor.document.positionAt(match.index);
     const endPos = activeEditor.document.positionAt(
@@ -255,11 +267,27 @@ function updateDecorations() {
     );
     const decoration = {
       range: new vscode.Range(startPos, endPos),
-      hoverMessage: "Check",
+      hoverMessage: "Subtítulo Nivel 2",
     };
     subTituloDosDecorations.push(decoration);
   }
   activeEditor.setDecorations(subTituloDosDecoration, subTituloDosDecorations);
+
+  // Decoraciones para "Subtitulo1 - ##:" (DESPUÉS de ###)
+  const subTituloUnoDecorations = [];
+  const subTituloUnoRegEx = /^##([^#].*)$/gm;
+  while ((match = subTituloUnoRegEx.exec(text))) {
+    const startPos = activeEditor.document.positionAt(match.index);
+    const endPos = activeEditor.document.positionAt(
+      match.index + match[0].length
+    );
+    const decoration = {
+      range: new vscode.Range(startPos, endPos),
+      hoverMessage: "Subtítulo Nivel 1",
+    };
+    subTituloUnoDecorations.push(decoration);
+  }
+  activeEditor.setDecorations(subTituloUnoDecoration, subTituloUnoDecorations);
 
   // Decoraciones para "check - 🗸:"
   const checkDecorations = [];
@@ -392,8 +420,7 @@ function updateDecorations() {
 
   // Decoraciones para "comentario 1:"
   const comentarioUnoDecorations = [];
-  const comentarioUnoRegEx =
-    /\/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\//g;
+  const comentarioUnoRegEx = /\/\*\*+\//g;  // Match /**....*/ con 2 o más asteriscos
   while ((match = comentarioUnoRegEx.exec(text))) {
     const startPos = activeEditor.document.positionAt(match.index);
     const endPos = activeEditor.document.positionAt(
@@ -562,6 +589,3 @@ function insertCurrentDate() {
     editBuilder.insert(currentPosition, currentDate);
   });
 }
-
-function deactivate() {}
-exports.deactivate = deactivate;

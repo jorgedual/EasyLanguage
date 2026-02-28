@@ -1,13 +1,15 @@
 # 🚀 Instrucciones para Probar tu Extensión Easy Language
 
-## ✅ Correcciones Aplicadas
+## ✅ Correcciones Aplicadas (Actualizado)
 
 Se han corregido los siguientes problemas críticos:
 
 1. ✅ **package.json** - Línea 14: Eliminado el espacio en `"onLanguage:easy"` 
-2. ✅ **extension.js** - Eliminado código duplicado y mal colocado (líneas 521-552)
-3. ✅ **extension.js** - Agregadas decoraciones de `#todo`, `#doing`, `#done` correctamente dentro de `updateDecorations()`
-4. ✅ **extension.js** - Agregada función `deactivate()` para completar el ciclo de vida de la extensión
+2. ✅ **package.json** - Activación universal: Cambiado a `"*"` para que la extensión se active al inicio
+3. ✅ **package.json** - Agregado comando faltante `extension.insertCurrentDate` en la sección commands
+4. ✅ **extension.js** - Eliminado código duplicado de la función `deactivate()` (líneas 566-567)
+5. ✅ **extension.js** - Agregada validación para aplicar decoraciones solo en archivos .easy
+6. ✅ **extension.js** - Decoraciones de `#todo`, `#doing`, `#done` correctamente implementadas
 
 ## 🔧 Cómo Probar la Extensión
 
