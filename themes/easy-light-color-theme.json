@@ -25,5 +25,153 @@
         "terminal.ansiWhite": "#d4d4d4",
         "terminal.ansiYellow": "#dcdcaa"
     },
-    "tokenColors": []
+    "tokenColors": [
+        {
+            "scope": "entity.name.section.tema.easy",
+            "settings": {
+                "foreground": "#FFFFFF",
+                "fontStyle": "bold italic"
+            }
+        },
+        {
+            "scope": "comment.line.fecha.easy",
+            "settings": {
+                "foreground": "#474747",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "markup.heading.1.easy",
+            "settings": {
+                "foreground": "#000000",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "markup.heading.2.easy",
+            "settings": {
+                "foreground": "#000000",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "markup.heading.3.easy",
+            "settings": {
+                "foreground": "#000000",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "keyword.control.todo.easy",
+            "settings": {
+                "foreground": "#000000",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "keyword.control.doing.easy",
+            "settings": {
+                "foreground": "#FFFFFF",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "keyword.control.done.easy",
+            "settings": {
+                "foreground": "#FFFFFF",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "keyword.control.alta.easy",
+            "settings": {
+                "foreground": "#FFC8C8",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "keyword.control.media.easy",
+            "settings": {
+                "foreground": "#727272",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "keyword.control.task.easy",
+            "settings": {
+                "foreground": "#CC8400",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "keyword.control.validar.easy",
+            "settings": {
+                "foreground": "#FFFFFF",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "keyword.control.check.easy",
+            "settings": {
+                "foreground": "#282A36",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "comment.block.decoration1.easy",
+            "settings": {
+                "foreground": "#000000",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "comment.block.decoration2.easy",
+            "settings": {
+                "foreground": "#FFFFFF",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "comment.line.triple-slash.easy",
+            "settings": {
+                "foreground": "#FFFFFF",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "entity.name.tag.mention.easy",
+            "settings": {
+                "foreground": "#FFFFFF",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "markup.deleted.checkmark.easy",
+            "settings": {
+                "foreground": "#000000",
+                "fontStyle": "bold strikethrough"
+            }
+        },
+        {
+            "scope": "punctuation.definition.checkbox.easy",
+            "settings": {
+                "foreground": "#334155",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "markup.bold.highlighted.easy",
+            "settings": {
+                "foreground": "#FF2D55",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "markup.bold.easy",
+            "settings": {
+                "foreground": "#000000",
+                "fontStyle": "bold"
+            }
+        }
+    ]
 }

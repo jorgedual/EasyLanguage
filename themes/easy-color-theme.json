@@ -150,6 +150,20 @@
                 "foreground": "#FF2D55",
                 "fontStyle": "bold underline"
             }
+        },
+        {
+            "scope": "markup.heading.1.easy",
+            "settings": {
+                "foreground": "#FFFFFF",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "scope": "markup.bold.easy",
+            "settings": {
+                "foreground": "#FFFFFF",
+                "fontStyle": "bold"
+            }
         }
     ]
 }

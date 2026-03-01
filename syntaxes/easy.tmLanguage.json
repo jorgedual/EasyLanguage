@@ -2,11 +2,62 @@
 	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
 	"name": "easyLanguage",
 	"patterns": [
-		{
-			"include": "#tags"
-		}
+		{ "include": "#tema" },
+		{ "include": "#fecha" },
+		{ "include": "#heading3" },
+		{ "include": "#heading2" },
+		{ "include": "#heading1" },
+		{ "include": "#tags" },
+		{ "include": "#commentBlock1" },
+		{ "include": "#commentBlock2" },
+		{ "include": "#commentTripleSlash" },
+		{ "include": "#mention" },
+		{ "include": "#checkmark" },
+		{ "include": "#checkbox" },
+		{ "include": "#highlighted" },
+		{ "include": "#bold" }
 	],
 	"repository": {
+		"tema": {
+			"patterns": [
+				{
+					"match": "^Tema:(.*)$",
+					"name": "entity.name.section.tema.easy"
+				}
+			]
+		},
+		"fecha": {
+			"patterns": [
+				{
+					"match": "^fecha:(.*)$",
+					"name": "comment.line.fecha.easy"
+				}
+			]
+		},
+		"heading3": {
+			"patterns": [
+				{
+					"match": "^###(.*)$",
+					"name": "markup.heading.3.easy"
+				}
+			]
+		},
+		"heading2": {
+			"patterns": [
+				{
+					"match": "^##([^#].*)$",
+					"name": "markup.heading.2.easy"
+				}
+			]
+		},
+		"heading1": {
+			"patterns": [
+				{
+					"match": "^#(?!todo|doing|done|validar|check|alta|task|media)([^#].*)$",
+					"name": "markup.heading.1.easy"
+				}
+			]
+		},
 		"tags": {
 			"patterns": [
 				{
@@ -40,6 +91,70 @@
 				{
 					"match": "#check\\b",
 					"name": "keyword.control.check.easy"
+				}
+			]
+		},
+		"commentBlock1": {
+			"patterns": [
+				{
+					"match": "/\\*\\*+/",
+					"name": "comment.block.decoration1.easy"
+				}
+			]
+		},
+		"commentBlock2": {
+			"patterns": [
+				{
+					"match": "/\\+(.*?)\\+/",
+					"name": "comment.block.decoration2.easy"
+				}
+			]
+		},
+		"commentTripleSlash": {
+			"patterns": [
+				{
+					"match": "///(.*)$",
+					"name": "comment.line.triple-slash.easy"
+				}
+			]
+		},
+		"mention": {
+			"patterns": [
+				{
+					"match": "/@(\\w+)",
+					"name": "entity.name.tag.mention.easy"
+				}
+			]
+		},
+		"checkmark": {
+			"patterns": [
+				{
+					"match": "🗸(.*)",
+					"name": "markup.deleted.checkmark.easy"
+				}
+			]
+		},
+		"checkbox": {
+			"patterns": [
+				{
+					"match": "□",
+					"name": "punctuation.definition.checkbox.easy"
+				}
+			]
+		},
+		"highlighted": {
+			"patterns": [
+				{
+					"match": ">>(.*)",
+					"name": "markup.bold.highlighted.easy"
+				}
+			]
+		},
+		"bold": {
+			"patterns": [
+				{
+					"match": "\\*\\*(.*)",
+					"name": "markup.bold.easy"
 				}
 			]
 		}
