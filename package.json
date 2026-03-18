@@ -28,7 +28,8 @@
     "task management"
   ],
   "activationEvents": [
-    "onLanguage:easy"
+    "onLanguage:easy",
+    "onLanguage:plaintext"
   ],
   "main": "./extension.js",
   "contributes": {

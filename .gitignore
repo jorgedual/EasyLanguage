@@ -1,8 +1,7 @@
 # Node modules
 node_modules/
 
-# VS Code extension build
-*.vsix
+
 
 # Logs
 npm-debug.log*

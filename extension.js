@@ -1,6 +1,11 @@
 const vscode = require("vscode");
 
 let activeEditor;
+const SUPPORTED_LANGUAGES = ['easy', 'plaintext'];
+
+function isSupportedLanguage(languageId) {
+  return SUPPORTED_LANGUAGES.includes(languageId);
+}
 
 function activate(context) {
   activeEditor = vscode.window.activeTextEditor;
@@ -11,7 +16,7 @@ function activate(context) {
   vscode.window.onDidChangeActiveTextEditor(
     (editor) => {
       activeEditor = editor;
-      if (editor && editor.document.languageId === 'easy') {
+      if (editor && isSupportedLanguage(editor.document.languageId)) {
         updateDecorations();
       }
     },
@@ -19,13 +24,11 @@ function activate(context) {
     context.subscriptions
   );
 
-  // Actualiza las decoraciones cuando el contenido del archivo cambia
   vscode.workspace.onDidChangeTextDocument(
     (event) => {
-      // Solo procesar si es un archivo .easy para evitar bucles infinitos con el OUTPUT
       if (activeEditor && 
           event.document === activeEditor.document &&
-          event.document.languageId === 'easy') {
+          isSupportedLanguage(event.document.languageId)) {
         updateDecorations();
       }
     },
@@ -217,9 +220,8 @@ function updateDecorations() {
     return;
   }
 
-  // Solo aplicar decoraciones en archivos .easy
-  if (activeEditor.document.languageId !== 'easy') {
-    return; // Salir silenciosamente si no es un archivo .easy
+  if (!isSupportedLanguage(activeEditor.document.languageId)) {
+    return;
   }
 
   const text = activeEditor.document.getText();
