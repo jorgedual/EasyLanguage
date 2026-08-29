@@ -5,6 +5,7 @@ import { getDecorationType } from "./index";
 import { isSupportedLanguage, logError, safeExecute, validateEditor } from "../utils";
 
 let activeEditor: vscode.TextEditor | undefined;
+let activeRules: readonly DecorationRule[] = decorationRules;
 
 export function setActiveEditor(editor: vscode.TextEditor | undefined): void {
   activeEditor = editor;
@@ -12,6 +13,14 @@ export function setActiveEditor(editor: vscode.TextEditor | undefined): void {
 
 export function getActiveEditor(): vscode.TextEditor | undefined {
   return activeEditor;
+}
+
+export function setDecorationRules(rules: readonly DecorationRule[]): void {
+  activeRules = rules;
+}
+
+export function getDecorationRules(): readonly DecorationRule[] {
+  return activeRules;
 }
 
 export function applyRule(rule: DecorationRule, text: string): void {
@@ -54,7 +63,7 @@ export function updateAllDecorations(): void {
 
     const text = activeEditor.document.getText();
 
-    for (const rule of decorationRules) {
+    for (const rule of activeRules) {
       applyRule(rule, text);
     }
   }, "update decorations");

@@ -1,7 +1,14 @@
 import { activate, deactivate } from "../src/extension";
 import * as vscode from "vscode";
 import { createMockEditor } from "./helpers";
-import { emitActiveEditorChange, emitDocumentChange, resetVscodeMock } from "./__mocks__/vscode";
+import {
+  clearConfiguration,
+  emitActiveEditorChange,
+  emitConfigurationChange,
+  emitDocumentChange,
+  resetVscodeMock,
+  setConfiguration,
+} from "./__mocks__/vscode";
 
 jest.useFakeTimers();
 
@@ -12,6 +19,7 @@ function createContext(): vscode.ExtensionContext {
 describe("extension", () => {
   beforeEach(() => {
     resetVscodeMock();
+    clearConfiguration();
     jest.spyOn(console, "log").mockImplementation(() => undefined);
     jest.spyOn(console, "error").mockImplementation(() => undefined);
   });
@@ -28,8 +36,32 @@ describe("extension", () => {
       activate(context);
 
       expect(vscode.window.createTextEditorDecorationType).toHaveBeenCalledTimes(20);
-      expect(vscode.commands.registerCommand).toHaveBeenCalledTimes(3);
-      expect(context.subscriptions).toHaveLength(5);
+      expect(vscode.commands.registerCommand).toHaveBeenCalledTimes(7);
+      expect(context.subscriptions).toHaveLength(10);
+    });
+
+    it("uses custom tags from settings", () => {
+      setConfiguration({
+        "easyLanguage.customTags": [{ tag: "urgente", backgroundColor: "#FF00FF" }],
+      });
+
+      activate(createContext());
+
+      expect(vscode.window.createTextEditorDecorationType).toHaveBeenCalledTimes(21);
+    });
+
+    it("uses the configured debounce delay", () => {
+      setConfiguration({ "easyLanguage.decorationUpdateDelay": 100 });
+
+      const { editor, setDecorations } = createMockEditor(["#todo tarea"]);
+      vscode.window.activeTextEditor = editor;
+
+      activate(createContext());
+
+      jest.advanceTimersByTime(99);
+      expect(setDecorations).not.toHaveBeenCalled();
+      jest.advanceTimersByTime(1);
+      expect(setDecorations).toHaveBeenCalledTimes(20);
     });
 
     it("updates decorations for the initial active editor after the debounce delay", () => {
@@ -78,6 +110,35 @@ describe("extension", () => {
       emitDocumentChange({ document: { languageId: "easy" } });
 
       jest.advanceTimersByTime(300);
+      expect(setDecorations).not.toHaveBeenCalled();
+    });
+
+    it("rebuilds decorations immediately when settings change", () => {
+      const { editor, setDecorations } = createMockEditor(["#urgente revisar"]);
+      vscode.window.activeTextEditor = editor;
+
+      activate(createContext());
+      jest.advanceTimersByTime(300);
+      setDecorations.mockClear();
+
+      setConfiguration({
+        "easyLanguage.customTags": [{ tag: "urgente", backgroundColor: "#FF00FF" }],
+      });
+      emitConfigurationChange(["easyLanguage.customTags"]);
+
+      expect(setDecorations).toHaveBeenCalledTimes(21);
+    });
+
+    it("ignores configuration changes outside the easyLanguage section", () => {
+      const { editor, setDecorations } = createMockEditor(["#todo tarea"]);
+      vscode.window.activeTextEditor = editor;
+
+      activate(createContext());
+      jest.advanceTimersByTime(300);
+      setDecorations.mockClear();
+
+      emitConfigurationChange(["editor.fontSize"]);
+
       expect(setDecorations).not.toHaveBeenCalled();
     });
 

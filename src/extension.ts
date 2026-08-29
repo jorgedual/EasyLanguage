@@ -1,27 +1,32 @@
 import * as vscode from "vscode";
 import { initializeDecorationTypes, disposeAllDecorationTypes } from "./decorations";
 import { registerCommands } from "./commands";
-import { setActiveEditor, updateAllDecorations } from "./decorations/manager";
-import {
-  debounce,
-  isSupportedLanguage,
-  logError,
-  logInfo,
-  validateEditor,
-} from "./utils";
+import { registerTaskCommands } from "./commands/taskCommands";
+import { setActiveEditor, setDecorationRules, updateAllDecorations } from "./decorations/manager";
+import { buildDecorationRules } from "./patterns";
+import { loadConfig, watchConfig } from "./config";
+import type { EasyLanguageConfig } from "./types";
+import { debounce, isSupportedLanguage, logError, logInfo, validateEditor } from "./utils";
 
-const DECORATION_UPDATE_DELAY_MS = 300;
+let currentConfig: EasyLanguageConfig;
+let debouncedUpdateDecorations: () => void;
 
-const debouncedUpdateDecorations = debounce(
-  () => updateAllDecorations(),
-  DECORATION_UPDATE_DELAY_MS
-);
+function createDebouncedUpdater(delay: number): () => void {
+  return debounce(() => updateAllDecorations(), delay);
+}
+
+function applyConfiguration(): void {
+  currentConfig = loadConfig();
+  initializeDecorationTypes(currentConfig);
+  setDecorationRules(buildDecorationRules(currentConfig));
+  debouncedUpdateDecorations = createDebouncedUpdater(currentConfig.decorationUpdateDelay);
+}
 
 export function activate(context: vscode.ExtensionContext): void {
   logInfo("EasyLanguage extension activating...");
 
   try {
-    initializeDecorationTypes();
+    applyConfiguration();
 
     setActiveEditor(vscode.window.activeTextEditor);
 
@@ -51,7 +56,15 @@ export function activate(context: vscode.ExtensionContext): void {
       })
     );
 
+    context.subscriptions.push(
+      watchConfig(() => {
+        applyConfiguration();
+        updateAllDecorations();
+      })
+    );
+
     registerCommands(context);
+    registerTaskCommands(context, () => currentConfig);
 
     logInfo("EasyLanguage extension activated successfully");
   } catch (error) {

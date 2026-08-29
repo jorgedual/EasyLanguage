@@ -4,7 +4,9 @@ export interface MockEditorResult {
   editor: vscode.TextEditor;
   edit: jest.Mock;
   setDecorations: jest.Mock;
+  revealRange: jest.Mock;
   insertCalls: Array<{ position: { line: number; character: number }; text: string }>;
+  getSelection(): { line: number; character: number };
 }
 
 export function createMockEditor(
@@ -49,13 +51,27 @@ export function createMockEditor(
   );
 
   const setDecorations = jest.fn();
+  const revealRange = jest.fn();
+
+  let selection = { active: new vscode.Position(cursor.line, cursor.character) };
+
+  const getSelection = (): { line: number; character: number } => ({
+    line: selection.active.line,
+    character: selection.active.character,
+  });
 
   const editor = {
     document,
-    selection: { active: new vscode.Position(cursor.line, cursor.character) },
+    get selection() {
+      return selection;
+    },
+    set selection(value: { active: vscode.Position }) {
+      selection = value;
+    },
     edit,
     setDecorations,
+    revealRange,
   } as unknown as vscode.TextEditor;
 
-  return { editor, edit, setDecorations, insertCalls };
+  return { editor, edit, setDecorations, revealRange, insertCalls, getSelection };
 }

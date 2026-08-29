@@ -71,6 +71,16 @@ describe("utils", () => {
 
       expect(getCurrentDate()).toBe("2026-01-05");
     });
+
+    it("supports all configured formats", () => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date(2026, 2, 9));
+
+      expect(getCurrentDate("YYYY-MM-DD")).toBe("2026-03-09");
+      expect(getCurrentDate("DD/MM/YYYY")).toBe("09/03/2026");
+      expect(getCurrentDate("MM/DD/YYYY")).toBe("03/09/2026");
+      expect(getCurrentDate("YYYY/MM/DD")).toBe("2026/03/09");
+    });
   });
 
   describe("validateEditor", () => {

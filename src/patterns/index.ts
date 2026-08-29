@@ -1,4 +1,4 @@
-import type { DecorationRule } from "../types";
+import type { DecorationRule, EasyLanguageConfig } from "../types";
 
 export const patterns = {
   tema: /^Tema:(.*)$/gm,
@@ -47,3 +47,52 @@ export const decorationRules: readonly DecorationRule[] = [
   { name: "doing", pattern: patterns.doing, hoverMessage: "En progreso" },
   { name: "done", pattern: patterns.done, hoverMessage: "Completado" },
 ];
+
+export const RESERVED_TAG_NAMES: readonly string[] = [
+  "todo",
+  "doing",
+  "done",
+  "validar",
+  "check",
+  "alta",
+  "task",
+  "media",
+];
+
+export function buildTituloPattern(excludedTagNames: readonly string[]): RegExp {
+  const excluded = excludedTagNames.length > 0 ? excludedTagNames.join("|") : "a^";
+  return new RegExp(`^#(?!${excluded})([^#].*)$`, "gm");
+}
+
+export function buildDecorationRules(config: EasyLanguageConfig): DecorationRule[] {
+  const customTagNames = config.customTags.map((customTag) => customTag.tag);
+  const tituloPattern = buildTituloPattern([...RESERVED_TAG_NAMES, ...customTagNames]);
+
+  const rules: DecorationRule[] = [];
+
+  for (const rule of decorationRules) {
+    if (config.disabledDecorations.has(rule.name)) {
+      continue;
+    }
+
+    if (rule.name === "titulo") {
+      rules.push({ ...rule, pattern: tituloPattern });
+    } else {
+      rules.push(rule);
+    }
+  }
+
+  for (const customTag of config.customTags) {
+    if (config.disabledDecorations.has(customTag.tag)) {
+      continue;
+    }
+
+    rules.push({
+      name: customTag.tag,
+      pattern: new RegExp(`#${customTag.tag}`, "g"),
+      hoverMessage: customTag.hoverMessage ?? customTag.tag,
+    });
+  }
+
+  return rules;
+}

@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { loadConfig } from "../config";
 import { getCurrentDate, logInfo, safeExecute, validateEditor } from "../utils";
 
 function insertAtLineStart(editor: vscode.TextEditor, text: string): void {
@@ -53,7 +54,7 @@ export function insertCurrentDate(): void {
       return;
     }
 
-    const currentDate = getCurrentDate();
+    const currentDate = getCurrentDate(loadConfig().dateFormat);
     const currentPosition = editor.selection.active;
 
     void editor.edit((editBuilder) => {

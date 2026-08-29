@@ -1,11 +1,22 @@
 import { getDecorationType, initializeDecorationTypes } from "../src/decorations/index";
-import { getActiveEditor, setActiveEditor, updateAllDecorations } from "../src/decorations/manager";
-import { decorationRules } from "../src/patterns";
-import type { DecorationTypeName } from "../src/types";
+import {
+  getActiveEditor,
+  getDecorationRules,
+  setActiveEditor,
+  setDecorationRules,
+  updateAllDecorations,
+} from "../src/decorations/manager";
+import { buildDecorationRules, decorationRules } from "../src/patterns";
+import { createDefaultConfig } from "../src/config";
+import type { EasyLanguageConfig } from "../src/types";
 import { createMockEditor } from "./helpers";
 import { resetVscodeMock } from "./__mocks__/vscode";
 
-function decorationsForType(setDecorations: jest.Mock, name: DecorationTypeName): unknown[] {
+function makeConfig(overrides: Partial<EasyLanguageConfig> = {}): EasyLanguageConfig {
+  return { ...createDefaultConfig(), ...overrides };
+}
+
+function decorationsForType(setDecorations: jest.Mock, name: string): unknown[] {
   const type = getDecorationType(name);
 
   const calls = setDecorations.mock.calls.filter(([decorationType]) => decorationType === type);
@@ -16,7 +27,8 @@ function decorationsForType(setDecorations: jest.Mock, name: DecorationTypeName)
 describe("decoration manager", () => {
   beforeEach(() => {
     resetVscodeMock();
-    initializeDecorationTypes();
+    initializeDecorationTypes(makeConfig());
+    setDecorationRules(decorationRules as readonly import("../src/types").DecorationRule[]);
     jest.spyOn(console, "log").mockImplementation(() => undefined);
     jest.spyOn(console, "error").mockImplementation(() => undefined);
   });
@@ -116,6 +128,50 @@ describe("decoration manager", () => {
       expect(consoleSpy).toHaveBeenCalledWith(
         expect.stringContaining("Failed to apply todo decorations decoration failure")
       );
+    });
+
+    it("applies custom tag rules after setDecorationRules", () => {
+      const config = makeConfig({
+        customTags: [{ tag: "urgente", backgroundColor: "#FF00FF", hoverMessage: "Urgente" }],
+      });
+      initializeDecorationTypes(config);
+      setDecorationRules(buildDecorationRules(config));
+
+      const { editor, setDecorations } = createMockEditor(["#urgente revisar", "#otro texto"]);
+      setActiveEditor(editor);
+
+      updateAllDecorations();
+
+      expect(setDecorations).toHaveBeenCalledTimes(config.customTags.length + decorationRules.length);
+      const urgenteDecorations = decorationsForType(setDecorations, "urgente") as Array<{
+        hoverMessage: string;
+      }>;
+      expect(urgenteDecorations).toHaveLength(1);
+      expect(urgenteDecorations[0].hoverMessage).toBe("Urgente");
+    });
+
+    it("skips rules disabled via setDecorationRules", () => {
+      const config = makeConfig({ disabledDecorations: new Set(["todo", "doing"]) });
+      initializeDecorationTypes(config);
+      setDecorationRules(buildDecorationRules(config));
+
+      const { editor, setDecorations } = createMockEditor(["#todo tarea", "#doing otra"]);
+      setActiveEditor(editor);
+
+      updateAllDecorations();
+
+      expect(setDecorations).toHaveBeenCalledTimes(decorationRules.length - 2);
+    });
+  });
+
+  describe("decoration rules state", () => {
+    it("exposes the current rules", () => {
+      const config = makeConfig({ customTags: [{ tag: "urgente", backgroundColor: "#FF00FF" }] });
+      const rules = buildDecorationRules(config);
+
+      setDecorationRules(rules);
+
+      expect(getDecorationRules()).toBe(rules);
     });
   });
 });

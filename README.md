@@ -45,13 +45,77 @@ Tu extensión resalta automáticamente las siguientes palabras clave con colores
 
 - **Ctrl+Alt+D** - Inserta un símbolo de check "🗸" al inicio de la línea
 - **Ctrl+Alt+I** - Inserta un símbolo de cuadro "□" al inicio de la línea
-- **Ctrl+Alt+F** - Inserta la fecha actual (formato YYYY-MM-DD)
+- **Ctrl+Alt+F** - Inserta la fecha actual (formato configurable, ver ⚙️ Configuración)
 
 ### 📝 Snippets
 
 - `/co` - Inserta una línea decorativa con asteriscos
 - `/cruz` - Inserta una línea decorativa con símbolos +
-- `/cd` - Inserta la fecha actual con formato `fecha: YYYY/MM/DD`
+- `/fecha` - Inserta la fecha actual con formato `fecha: YYYY-MM-DD`
+- `/tarea` - Inserta una tarea con prioridad a elegir (`#alta`, `#media`, `#task`)
+- `/reunion` - Plantilla de notas de reunión (asistentes, puntos, acuerdos, pendientes)
+- `/proyecto` - Plantilla de plan de proyecto (objetivo, fases, tareas, riesgos)
+- `/standup` - Plantilla de daily standup (ayer, hoy, bloqueos)
+
+> Nota: el snippet `/fecha` usa siempre el formato YYYY-MM-DD (los snippets no pueden
+> leer la configuración). El comando **Ctrl+Alt+F** sí respeta `easyLanguage.dateFormat`.
+
+## ⚙️ Configuración
+
+Todas las opciones están en la sección `easyLanguage` de la configuración de VS Code:
+
+| Opción                                     | Predeterminado | Descripción                                                                                   |
+| ------------------------------------------ | -------------- | --------------------------------------------------------------------------------------------- |
+| `easyLanguage.decorationUpdateDelay`       | `300`          | Retardo (ms) para actualizar colores mientras escribes                                        |
+| `easyLanguage.dateFormat`                  | `"YYYY-MM-DD"` | Formato de fecha del comando «Insert Current Date» (`DD/MM/YYYY`, `MM/DD/YYYY`, `YYYY/MM/DD`) |
+| `easyLanguage.decorations.disabled`        | `[]`           | Decoraciones integradas a desactivar                                                          |
+| `easyLanguage.decorations.backgroundColor` | `{}`           | Sobrescribe colores de fondo, p. ej. `{ "todo": "#FF0000" }`                                  |
+| `easyLanguage.decorations.foregroundColor` | `{}`           | Sobrescribe colores de texto                                                                  |
+| `easyLanguage.customTags`                  | `[]`           | Etiquetas personalizadas con su propio color                                                  |
+
+Los cambios de configuración se aplican al instante, sin recargar.
+
+### Etiquetas personalizadas
+
+Puedes crear tus propias etiquetas con color, y se resaltarán igual que las integradas
+(sin ser tratadas como títulos):
+
+```json
+"easyLanguage.customTags": [
+  {
+    "tag": "urgente",
+    "backgroundColor": "#FF00FF",
+    "foregroundColor": "#FFFFFF",
+    "hoverMessage": "Revisar cuanto antes"
+  },
+  {
+    "tag": "idea",
+    "backgroundColor": "#00CED1"
+  }
+]
+```
+
+> Limitación conocida: las etiquetas personalizadas se colorean mediante decoraciones del
+> editor; la gramática estática (`easy.tmLanguage.json`) no las tokeniza para los temas
+> Easy Dark / Easy Light.
+
+## 📊 Herramientas de tareas
+
+Cuatro comandos disponibles en la paleta de comandos (busca «Easy:»):
+
+- **Easy: Mostrar estadísticas de tareas** — cuenta las tareas del documento por etiqueta
+- **Easy: Ir a la tarea siguiente** / **Easy: Ir a la tarea anterior** — salta entre líneas con tareas (con vuelta al inicio/fin)
+- **Easy: Filtrar tareas (ir a)** — lista todas las tareas en un QuickPick y salta a la seleccionada
+
+Atajos sugeridos (configúralos en «Métodos abreviados de teclado»):
+
+```json
+[
+  { "key": "alt+n", "command": "easyLanguage.nextTask", "when": "editorTextFocus" },
+  { "key": "alt+p", "command": "easyLanguage.prevTask", "when": "editorTextFocus" },
+  { "key": "alt+t", "command": "easyLanguage.showTaskStats", "when": "editorTextFocus" }
+]
+```
 
 ## 🚀 Uso
 

@@ -100,8 +100,123 @@
       {
         "command": "extension.insertCurrentDate",
         "title": "Insert Current Date"
+      },
+      {
+        "command": "easyLanguage.showTaskStats",
+        "title": "Easy: Mostrar estadísticas de tareas"
+      },
+      {
+        "command": "easyLanguage.nextTask",
+        "title": "Easy: Ir a la tarea siguiente"
+      },
+      {
+        "command": "easyLanguage.prevTask",
+        "title": "Easy: Ir a la tarea anterior"
+      },
+      {
+        "command": "easyLanguage.filterTasks",
+        "title": "Easy: Filtrar tareas (ir a)"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Easy Language",
+      "properties": {
+        "easyLanguage.decorationUpdateDelay": {
+          "type": "number",
+          "default": 300,
+          "minimum": 0,
+          "description": "Retardo en milisegundos para actualizar las decoraciones mientras se escribe."
+        },
+        "easyLanguage.dateFormat": {
+          "type": "string",
+          "enum": [
+            "YYYY-MM-DD",
+            "DD/MM/YYYY",
+            "MM/DD/YYYY",
+            "YYYY/MM/DD"
+          ],
+          "default": "YYYY-MM-DD",
+          "description": "Formato de fecha que inserta el comando «Insert Current Date»."
+        },
+        "easyLanguage.decorations.disabled": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "tema",
+              "fecha",
+              "subTituloDos",
+              "subTituloUno",
+              "titulo",
+              "nuevoTexto",
+              "negrita",
+              "checkmark",
+              "arroba",
+              "validar",
+              "check",
+              "alta",
+              "task",
+              "media",
+              "comentarioUno",
+              "comentarioDos",
+              "comentarioTres",
+              "todo",
+              "doing",
+              "done"
+            ]
+          },
+          "default": [],
+          "description": "Decoraciones integradas que se desactivan (también acepta nombres de etiquetas personalizadas)."
+        },
+        "easyLanguage.decorations.backgroundColor": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "default": {},
+          "description": "Sobrescribe el color de fondo de una decoración. Clave: nombre de decoración (p. ej. \"todo\"), valor: color hexadecimal (p. ej. \"#FF0000\")."
+        },
+        "easyLanguage.decorations.foregroundColor": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "default": {},
+          "description": "Sobrescribe el color del texto de una decoración. Clave: nombre de decoración, valor: color hexadecimal."
+        },
+        "easyLanguage.customTags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "tag",
+              "backgroundColor"
+            ],
+            "properties": {
+              "tag": {
+                "type": "string",
+                "pattern": "^[#]?[a-zA-Z0-9_]+$",
+                "description": "Nombre de la etiqueta (sin #; se acepta también con #). Ejemplo: \"urgente\"."
+              },
+              "backgroundColor": {
+                "type": "string",
+                "description": "Color de fondo (#RGB o #RRGGBB). Ejemplo: \"#FF00FF\"."
+              },
+              "foregroundColor": {
+                "type": "string",
+                "description": "Color del texto (#RGB o #RRGGBB). Opcional."
+              },
+              "hoverMessage": {
+                "type": "string",
+                "description": "Mensaje al pasar el cursor por la etiqueta. Opcional."
+              }
+            }
+          },
+          "default": [],
+          "description": "Etiquetas personalizadas (#tag) con su propio color. Se resaltan igual que las integradas y no se tratan como títulos."
+        }
+      }
+    }
   },
   "scripts": {
     "compile": "tsc -p .",

@@ -1,5 +1,11 @@
-import { decorationRules, patterns } from "../src/patterns";
+import { buildDecorationRules, buildTituloPattern, decorationRules, patterns } from "../src/patterns";
+import { createDefaultConfig } from "../src/config";
+import type { EasyLanguageConfig } from "../src/types";
 import type { DecorationRule } from "../src/types";
+
+function makeConfig(overrides: Partial<EasyLanguageConfig> = {}): EasyLanguageConfig {
+  return { ...createDefaultConfig(), ...overrides };
+}
 
 function matchesOf(regex: RegExp, text: string): string[] {
   const matches: string[] = [];
@@ -152,6 +158,95 @@ describe("patterns", () => {
       for (const rule of decorationRules as readonly DecorationRule[]) {
         expect(rule.hoverMessage.length).toBeGreaterThan(0);
       }
+    });
+  });
+
+  describe("buildDecorationRules", () => {
+    it("returns the fixed rules with the default config", () => {
+      const rules = buildDecorationRules(createDefaultConfig());
+
+      expect(rules).toHaveLength(20);
+      expect(rules.map((rule) => rule.name)).toContain("titulo");
+    });
+
+    it("removes disabled rules", () => {
+      const config = makeConfig({ disabledDecorations: new Set(["todo", "tema"]) });
+
+      const rules = buildDecorationRules(config);
+
+      expect(rules).toHaveLength(18);
+      expect(rules.map((rule) => rule.name)).not.toContain("todo");
+      expect(rules.map((rule) => rule.name)).not.toContain("tema");
+    });
+
+    it("adds rules for custom tags", () => {
+      const config = makeConfig({
+        customTags: [
+          { tag: "urgente", backgroundColor: "#FF00FF", hoverMessage: "Urgente" },
+        ],
+      });
+
+      const rules = buildDecorationRules(config);
+
+      expect(rules).toHaveLength(21);
+      const urgente = rules.find((rule) => rule.name === "urgente");
+      expect(urgente?.hoverMessage).toBe("Urgente");
+      expect(urgente?.pattern.test("#urgente revisar")).toBe(true);
+    });
+
+    it("uses the tag name as hover message when none is provided", () => {
+      const config = makeConfig({
+        customTags: [{ tag: "urgente", backgroundColor: "#FF00FF" }],
+      });
+
+      const rules = buildDecorationRules(config);
+
+      expect(rules.find((rule) => rule.name === "urgente")?.hoverMessage).toBe("urgente");
+    });
+
+    it("excludes custom tags from the titulo pattern", () => {
+      const config = makeConfig({
+        customTags: [{ tag: "urgente", backgroundColor: "#FF00FF" }],
+      });
+
+      const titulo = buildDecorationRules(config).find((rule) => rule.name === "titulo");
+
+      expect(titulo?.pattern.test("#urgente texto")).toBe(false);
+      expect(titulo?.pattern.test("#titulo-normal")).toBe(true);
+    });
+
+    it("keeps excluding reserved tags in the titulo pattern", () => {
+      const titulo = buildDecorationRules(makeConfig()).find((rule) => rule.name === "titulo");
+
+      expect(titulo?.pattern.test("#todo tarea")).toBe(false);
+      expect(titulo?.pattern.test("#otro")).toBe(true);
+    });
+
+    it("skips custom tags disabled by name", () => {
+      const config = makeConfig({
+        customTags: [{ tag: "urgente", backgroundColor: "#FF00FF" }],
+        disabledDecorations: new Set(["urgente"]),
+      });
+
+      const rules = buildDecorationRules(config);
+
+      expect(rules.map((rule) => rule.name)).not.toContain("urgente");
+    });
+  });
+
+  describe("buildTituloPattern", () => {
+    it("matches everything when no tags are excluded", () => {
+      const pattern = buildTituloPattern([]);
+
+      expect(pattern.test("#todo")).toBe(true);
+    });
+
+    it("excludes the provided tag names", () => {
+      const pattern = buildTituloPattern(["todo", "urgente"]);
+
+      expect(pattern.test("#todo")).toBe(false);
+      expect(pattern.test("#urgente")).toBe(false);
+      expect(pattern.test("#normal")).toBe(true);
     });
   });
 });

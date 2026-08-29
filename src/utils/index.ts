@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import type { DateFormat } from "../types";
 
 const SUPPORTED_LANGUAGES: readonly string[] = ["easy", "plaintext"];
 
@@ -16,13 +17,13 @@ export function debounce<T extends (...args: never[]) => void>(
   };
 }
 
-export function getCurrentDate(): string {
+export function getCurrentDate(format: DateFormat = "YYYY-MM-DD"): string {
   const now = new Date();
-  const year = now.getFullYear();
+  const year = now.getFullYear().toString();
   const month = (now.getMonth() + 1).toString().padStart(2, "0");
   const day = now.getDate().toString().padStart(2, "0");
 
-  return `${year}-${month}-${day}`;
+  return format.replace("YYYY", year).replace("MM", month).replace("DD", day);
 }
 
 export function validateEditor(

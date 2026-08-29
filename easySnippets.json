@@ -17,5 +17,75 @@
     "prefix": "/fecha",
     "body": ["fecha: ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}"],
     "description": "Inserta la fecha actual en formato YYYY-MM-DD"
+  },
+
+  "Tarea": {
+    "prefix": "/tarea",
+    "body": ["□ ${1:descripción de la tarea} ${2|#alta,#media,#task|}"],
+    "description": "Inserta una tarea con prioridad."
+  },
+
+  "Notas de Reunión": {
+    "prefix": "/reunion",
+    "body": [
+      "Tema: Reunión — ${1:asunto}",
+      "fecha: ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}",
+      "",
+      "## Asistentes",
+      "/@${2:nombre}",
+      "",
+      "## Puntos tratados",
+      "- ${3:punto}",
+      "",
+      "## Acuerdos",
+      "- ${4:acuerdo}",
+      "",
+      "## Pendientes",
+      "#todo ${5:tarea pendiente} #alta",
+      "/******************************************************************************/"
+    ],
+    "description": "Plantilla de notas de reunión."
+  },
+
+  "Plan de Proyecto": {
+    "prefix": "/proyecto",
+    "body": [
+      "Tema: Proyecto — ${1:nombre del proyecto}",
+      "fecha: ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}",
+      "/******************************************************************************/",
+      "",
+      "## Objetivo",
+      "${2:objetivo del proyecto}",
+      "",
+      "### Fases",
+      "1. ${3:fase}",
+      "",
+      "## Tareas",
+      "□ ${4:tarea} #alta",
+      "□ ${5:tarea} #media",
+      "",
+      "## Riesgos",
+      "#validar ${6:riesgo a validar}",
+      "/******************************************************************************/"
+    ],
+    "description": "Plantilla de plan de proyecto."
+  },
+
+  "Daily Standup": {
+    "prefix": "/standup",
+    "body": [
+      "Tema: Standup",
+      "fecha: ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}",
+      "",
+      "## Ayer",
+      "🗸 ${1:tarea completada} #done",
+      "",
+      "## Hoy",
+      "□ ${2:tarea de hoy} #doing",
+      "",
+      "## Bloqueos",
+      "#validar ${3:bloqueo}"
+    ],
+    "description": "Plantilla de daily standup."
   }
 }
