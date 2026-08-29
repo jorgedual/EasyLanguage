@@ -1,0 +1,22 @@
+module.exports = {
+  tema: /^Tema:(.*)$/gm,
+  fecha: /^fecha:(.*)$/gm,
+  subTituloDos: /^###(.*)$/gm,
+  subTituloUno: /^##([^#].*)$/gm,
+  titulo: /^#(?!todo|doing|done|validar|check|alta|task|media)([^#].*)$/gm,
+  nuevoTexto: />>(.*)/g,
+  negrita: /\*\*(.*)/g,
+  checkmark: /🗸(.*)/g,
+  arroba: /\/@(\w+)/g,
+  validar: /#validar/g,
+  check: /#check/g,
+  alta: /#alta/g,
+  task: /#task/g,
+  media: /#media/g,
+  comentarioUno: /\/\*\*+\//g,
+  comentarioDos: /\/\+(.*?)\+\//g,
+  comentarioTres: /\/\/\/(.*)$/gm,
+  todo: /#todo/g,
+  doing: /#doing/g,
+  done: /#done/g
+};
