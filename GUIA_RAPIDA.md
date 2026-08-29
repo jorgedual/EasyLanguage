@@ -3,11 +3,13 @@
 ## 🚀 Método Rápido: Modo Debug (F5)
 
 ### Cuando usar:
+
 - Estás desarrollando y haciendo cambios
 - Quieres probar rápidamente
 - No quieres instalar/reinstalar
 
 ### Pasos:
+
 1. Abre el proyecto en VS Code (`C:\DEV\EasyLanguage`)
 2. Presiona **F5**
 3. Se abre ventana [Extension Development Host]
@@ -22,6 +24,7 @@
    - **Ctrl+Alt+F** → `2026-02-28`
 
 ### Si haces más cambios:
+
 - **Ctrl+R** en la ventana de desarrollo para recargar
 - Para cambios en package.json: cierra y vuelve a F5
 
@@ -30,12 +33,15 @@
 ## 📦 Método Permanente: Instalar .vsix
 
 ### Cuando usar:
+
 - Terminaste de desarrollar
 - Quieres usar la extensión normalmente
 - No quieres abrir modo debug cada vez
 
 ### Pasos:
+
 1. **Genera el paquete** (solo si hiciste cambios nuevos):
+
    ```bash
    cd C:\DEV\EasyLanguage
    npx vsce package --allow-star-activation
@@ -64,6 +70,7 @@
 ### Cambios en archivos de código (extension.js, easySnippets.json, etc.):
 
 **Opción 1: Solo probar (Modo Debug)**
+
 ```
 1. Cierra ventana de debug anterior (si existe)
 2. Presiona F5
@@ -71,6 +78,7 @@
 ```
 
 **Opción 2: Actualizar instalación permanente**
+
 ```
 1. Incrementa versión en package.json (ej: "0.0.3")
 2. Genera paquete: npx vsce package --allow-star-activation
@@ -84,12 +92,14 @@
 ## 📝 Estado Actual
 
 ✅ Archivo `easy-0.0.2.vsix` está listo con:
+
 - ✅ Snippet `/fecha` (cambiado de `/cd`)
-- ✅ Snippet `/co` 
+- ✅ Snippet `/co`
 - ✅ Snippet `/cruz`
 - ✅ Todos los colores funcionando (Tema, ##, ###, #tags, etc.)
 - ✅ Atajos Ctrl+Alt+D/I/F
 
 **Próximo paso:** Elige:
+
 - Probar en modo debug (F5) → Inmediato, sin instalar
 - Instalar .vsix → Permanente, funciona siempre

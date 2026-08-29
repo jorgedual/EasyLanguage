@@ -45,6 +45,7 @@ EasyLanguage/
 ### Extension Versions
 
 The project includes historical `.vsix` extension packages:
+
 - easy-0.0.1.vsix
 - easy-0.0.2.vsix
 - easy-0.0.3.vsix
@@ -59,13 +60,16 @@ The project includes historical `.vsix` extension packages:
 ### Directories
 
 #### syntaxes/
+
 - **easy.tmLanguage.json** (163 lines) - TextMate grammar for syntax highlighting
 
 #### themes/
+
 - **easy-color-theme.json** (169 lines) - Dark color theme configuration
 - **easy-light-color-theme.json** (177 lines) - Light color theme configuration
 
 #### Example Files
+
 - **test-example.easy** (108 lines) - Comprehensive example demonstrating all features
 - **hola.easy** - Basic example file
 
@@ -76,6 +80,7 @@ The project includes historical `.vsix` extension packages:
 ### 1. Extension Manifest (package.json)
 
 **Key Configuration:**
+
 - **Extension ID:** `easy`
 - **Display Name:** `Easy Language`
 - **Supported Languages:** `easy`, `plaintext`
@@ -88,15 +93,17 @@ The project includes historical `.vsix` extension packages:
 ### 2. Main Extension Logic (extension.js)
 
 **Key Functions:**
+
 - `activate(context)` - Extension activation and event registration
 - `deactivate()` - Extension cleanup
 - `updateDecorations()` - Applies all text decorations based on regex patterns
 - `insertText()` - Inserts check mark (🗸) at line start
-- `insertSquare()` - Inserts checkbox (□) at line start  
+- `insertSquare()` - Inserts checkbox (□) at line start
 - `insertCurrentDate()` - Inserts current date (YYYY-MM-DD)
 - `getCurrentDate()` - Returns formatted current date
 
 **Decoration Types (19 total):**
+
 1. `todoDecoration` - Yellow background (#FFD700) for #todo
 2. `doingDecoration` - Blue background (#1E90FF) for #doing
 3. `doneDecoration` - Green background (#32CD32) for #done
@@ -121,6 +128,7 @@ The project includes historical `.vsix` extension packages:
 ### 3. TextMate Grammar (syntaxes/easy.tmLanguage.json)
 
 **Pattern Categories:**
+
 - `tema` - Matches `^Tema:(.*)$`
 - `fecha` - Matches `^fecha:(.*)$`
 - `heading3` - Matches `^###(.*)$`
@@ -139,11 +147,13 @@ The project includes historical `.vsix` extension packages:
 ### 4. Themes
 
 #### Easy Dark Theme
+
 - Type: `dark`
 - 19 token color scopes matching grammar patterns
 - Custom colors for all EasyLanguage syntax elements
 
-#### Easy Light Theme  
+#### Easy Light Theme
+
 - Type: `light`
 - White editor background
 - Terminal color scheme included
@@ -152,6 +162,7 @@ The project includes historical `.vsix` extension packages:
 ### 5. Code Snippets (easySnippets.json)
 
 **Available Snippets:**
+
 1. `/co` - Decorative asterisk block: `/******************************************************************************/`
 2. `/cruz` - Decorative plus block: `/+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++/`
 3. `/fecha` - Current date: `fecha: YYYY-MM-DD`
@@ -159,6 +170,7 @@ The project includes historical `.vsix` extension packages:
 ### 6. Language Configuration
 
 **Comments:**
+
 - Line comment: `//`
 - Block comment: `/* */`
 
@@ -175,20 +187,24 @@ The project includes historical `.vsix` extension packages:
 ### Color Coding System
 
 #### Task Management Tags
+
 - **#todo** - Yellow background, black text, bold, rounded corners
 - **#doing** - Blue background, white text, bold, rounded corners
 - **#done** - Green background, white text, bold, rounded corners
 
 #### Priority Tags
+
 - **#alta** - Red background (#F62E2E), light red text (#FFC8C8)
 - **#media** - Yellow background (#F3DB00), gray text (#727272)
 - **#task** - Yellow background (#FFF893), orange text (#CC8400)
 
 #### Validation Tags
+
 - **#validar** - Red background (#E74444), white text, rounded corners
 - **#check** - Green background (#51FB15), dark text (#282A36), rounded corners
 
 #### Formatting Elements
+
 - **Tema:** - Black background, white text, bold, italic, rounded corners
 - **##** - Light blue background (#E5ECF7), bold text, rounded corners
 - **###** - Light blue-green background (#F0F6FF), bold text, rounded corners
@@ -199,22 +215,23 @@ The project includes historical `.vsix` extension packages:
 - **🗸** - Strikethrough, bold, green background (#38F5B1), black text
 
 #### Decorative Comments
-- **/***...****/** - Light gray background (#F6F6F6), black text
+
+- **/**_..._***/** - Light gray background (#F6F6F6), black text
 - **/+...+/** - Medium gray background (#666666), white text
 - **///** - Dark gray background (#777777), white text
 
 ### Keyboard Shortcuts
 
-| Shortcut | Action | Command |
-|----------|--------|---------|
-| Ctrl+Alt+D | Insert check mark | `extension.insertText` |
-| Ctrl+Alt+I | Insert checkbox | `extension.insertSquare` |
+| Shortcut   | Action              | Command                       |
+| ---------- | ------------------- | ----------------------------- |
+| Ctrl+Alt+D | Insert check mark   | `extension.insertText`        |
+| Ctrl+Alt+I | Insert checkbox     | `extension.insertSquare`      |
 | Ctrl+Alt+F | Insert current date | `extension.insertCurrentDate` |
 
 ### Commands
 
 1. **extension.insertText** - Insert Check Mark
-2. **extension.insertSquare** - Insert Square  
+2. **extension.insertSquare** - Insert Square
 3. **extension.insertCurrentDate** - Insert Current Date
 
 ---
@@ -231,6 +248,7 @@ The project includes historical `.vsix` extension packages:
 ### Production Installation
 
 Install from `.vsix` package:
+
 ```bash
 code --install-extension easy-0.1.0.vsix
 ```
@@ -254,12 +272,15 @@ code --install-extension easy-0.1.0.vsix
 ## Version History
 
 ### 0.1.0 (Current)
+
 - Latest stable release
 
 ### 0.0.9 through 0.0.2
+
 - Progressive improvements and bug fixes
 
 ### 0.0.1
+
 - Initial version
 - Basic functionality for colored tags and formatted titles
 
@@ -268,14 +289,17 @@ code --install-extension easy-0.1.0.vsix
 ## Extension Capabilities
 
 ### Supported File Types
+
 - `.easy` files
 - `plaintext` files
 
 ### Language Activation Events
+
 - `onLanguage:easy`
 - `onLanguage:plaintext`
 
 ### Event Listeners
+
 - Active text editor changes
 - Text document changes
 - Real-time decoration updates
@@ -285,6 +309,7 @@ code --install-extension easy-0.1.0.vsix
 ## Color Theme Integration
 
 The extension includes two complete color themes:
+
 1. **Easy Dark** - Optimized for dark mode with rich, saturated colors
 2. **Easy Light** - Optimized for light mode with clear, high-contrast colors
 
@@ -295,6 +320,7 @@ Both themes include terminal color schemes and editor background/foreground sett
 ## Test Coverage
 
 The `test-example.easy` file demonstrates:
+
 - All color tags and their visual appearance
 - All heading levels (#, ##, ###)
 - All comment types
@@ -306,16 +332,16 @@ The `test-example.easy` file demonstrates:
 
 ## Configuration Files Summary
 
-| File | Purpose | Lines |
-|------|---------|-------|
-| package.json | Extension manifest | 117 |
-| extension.js | Main logic | 625 |
-| easy.tmLanguage.json | Syntax grammar | 163 |
-| easy-color-theme.json | Dark theme | 169 |
-| easy-light-color-theme.json | Light theme | 177 |
-| easySnippets.json | Code snippets | 26 |
-| language-configuration.json | Language settings | 30 |
-| test-example.easy | Example file | 108 |
+| File                        | Purpose            | Lines |
+| --------------------------- | ------------------ | ----- |
+| package.json                | Extension manifest | 117   |
+| extension.js                | Main logic         | 625   |
+| easy.tmLanguage.json        | Syntax grammar     | 163   |
+| easy-color-theme.json       | Dark theme         | 169   |
+| easy-light-color-theme.json | Light theme        | 177   |
+| easySnippets.json           | Code snippets      | 26    |
+| language-configuration.json | Language settings  | 30    |
+| test-example.easy           | Example file       | 108   |
 
 ---
 
@@ -381,5 +407,5 @@ VSCode Rendering (final display)
 
 ---
 
-*Last Updated: 2026-08-29*
-*Documentation generated from EasyLanguage v0.1.0 project structure*
+_Last Updated: 2026-08-29_
+_Documentation generated from EasyLanguage v0.1.0 project structure_

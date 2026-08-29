@@ -7,6 +7,7 @@ This improvement plan addresses code quality, maintainability, performance, and 
 ## Current State Analysis
 
 ### Strengths
+
 - Functional core with 19 decoration types
 - Complete color theme system (dark/light)
 - Comprehensive TextMate grammar
@@ -14,6 +15,7 @@ This improvement plan addresses code quality, maintainability, performance, and 
 - Good user documentation
 
 ### Weaknesses
+
 - Single 625-line JavaScript file (extension.js)
 - No test coverage
 - No error handling
@@ -29,7 +31,9 @@ This improvement plan addresses code quality, maintainability, performance, and 
 ## Phase 1: Critical Improvements (Weeks 1-2)
 
 ### 1.1 Error Handling & Stability
+
 **Priority: HIGH**
+
 - Add try-catch blocks around decoration updates
 - Validate editor state before operations
 - Add graceful degradation for unsupported features
@@ -38,7 +42,9 @@ This improvement plan addresses code quality, maintainability, performance, and 
 **Impact**: Prevent extension crashes, improve user experience
 
 ### 1.2 Performance Optimization
+
 **Priority: HIGH**
+
 - Debounce decoration updates (current: updates on every keystroke)
 - Cache decoration types creation
 - Optimize regex patterns for better performance
@@ -47,10 +53,12 @@ This improvement plan addresses code quality, maintainability, performance, and 
 **Impact**: Smoother typing experience, lower CPU usage
 
 ### 1.3 Code Splitting & Organization
+
 **Priority: HIGH**
+
 - Split extension.js into focused modules:
   - `src/decorations.js` - Decoration type definitions
-  - `src/patterns.js` - Regex pattern definitions  
+  - `src/patterns.js` - Regex pattern definitions
   - `src/commands.js` - Command handlers
   - `src/utils.js` - Utility functions
   - `src/extension.js` - Main orchestration
@@ -62,7 +70,9 @@ This improvement plan addresses code quality, maintainability, performance, and 
 ## Phase 2: Code Quality & Testing (Weeks 3-4)
 
 ### 2.1 TypeScript Migration
+
 **Priority: MEDIUM**
+
 - Convert JavaScript to TypeScript
 - Define proper interfaces for decorations, patterns, commands
 - Add type annotations for all functions
@@ -71,7 +81,9 @@ This improvement plan addresses code quality, maintainability, performance, and 
 **Impact**: Type safety, better IDE support, catch errors early
 
 ### 2.2 Testing Infrastructure
+
 **Priority: MEDIUM**
+
 - Set up Jest test framework
 - Create unit tests for:
   - Regex pattern matching
@@ -84,7 +96,9 @@ This improvement plan addresses code quality, maintainability, performance, and 
 **Impact**: Prevent regressions, improve code reliability
 
 ### 2.3 Linting & Code Style
+
 **Priority: MEDIUM**
+
 - Configure ESLint with TypeScript rules
 - Add Prettier for code formatting
 - Create consistent code style guide
@@ -98,7 +112,9 @@ This improvement plan addresses code quality, maintainability, performance, and 
 ## Phase 3: Feature Enhancements (Weeks 5-6)
 
 ### 3.1 Configuration System
+
 **Priority: MEDIUM**
+
 - Add VSCode settings for customization:
   - Custom colors for decoration types
   - Keyboard shortcut customization
@@ -111,7 +127,9 @@ This improvement plan addresses code quality, maintainability, performance, and 
 **Impact**: User customization, better UX
 
 ### 3.2 Enhanced Snippets System
+
 **Priority: LOW**
+
 - Expand snippet library:
   - Task templates (with priority tags)
   - Meeting notes template
@@ -123,7 +141,9 @@ This improvement plan addresses code quality, maintainability, performance, and 
 **Impact**: Faster content creation, more templates
 
 ### 3.3 Advanced Formatting Features
+
 **Priority: LOW**
+
 - Add nested task support (indentation levels)
 - Implement task filtering (show only #todo, etc.)
 - Add task statistics (count by status)
@@ -137,7 +157,9 @@ This improvement plan addresses code quality, maintainability, performance, and 
 ## Phase 4: Developer Experience (Weeks 7-8)
 
 ### 4.1 Build System
+
 **Priority: MEDIUM**
+
 - Set up webpack/esbuild for bundling
 - Configure production vs development builds
 - Add build scripts for different scenarios
@@ -147,7 +169,9 @@ This improvement plan addresses code quality, maintainability, performance, and 
 **Impact**: Faster development, better production builds
 
 ### 4.2 CI/CD Pipeline
+
 **Priority: MEDIUM**
+
 - Set up GitHub Actions workflow:
   - Run tests on every push
   - Lint checking
@@ -159,7 +183,9 @@ This improvement plan addresses code quality, maintainability, performance, and 
 **Impact**: Automated quality checks, streamlined releases
 
 ### 4.3 Documentation Improvements
+
 **Priority: LOW**
+
 - Add JSDoc comments to all functions
 - Create API documentation
 - Add contribution guidelines
@@ -174,7 +200,9 @@ This improvement plan addresses code quality, maintainability, performance, and 
 ## Phase 5: Advanced Features (Weeks 9-10)
 
 ### 5.1 Smart Features
+
 **Priority: LOW**
+
 - Add auto-completion for tags (#todo, #doing, etc.)
 - Implement spell checking
 - Add auto-formatting on save
@@ -184,7 +212,9 @@ This improvement plan addresses code quality, maintainability, performance, and 
 **Impact**: Enhanced productivity features
 
 ### 5.2 Integration Features
+
 **Priority: LOW**
+
 - Add export to Markdown
 - Import from other note formats
 - Sync with external task managers
@@ -194,7 +224,9 @@ This improvement plan addresses code quality, maintainability, performance, and 
 **Impact**: Better integration with existing workflows
 
 ### 5.3 Analytics & Telemetry
+
 **Priority: VERY LOW**
+
 - Add anonymous usage analytics
 - Track feature usage patterns
 - Implement crash reporting
@@ -207,6 +239,7 @@ This improvement plan addresses code quality, maintainability, performance, and 
 ## Technical Debt Items
 
 ### Immediate Technical Debt
+
 1. **Hardcoded colors**: Move all color values to configuration
 2. **Regex duplication**: Consolidate similar patterns
 3. **Magic strings**: Replace with constants
@@ -214,12 +247,14 @@ This improvement plan addresses code quality, maintainability, performance, and 
 5. **Event listener management**: Verify all listeners are disposed
 
 ### Medium-term Technical Debt
+
 1. **Theme coupling**: Decouple decoration logic from theme files
 2. **Pattern conflicts**: Resolve regex matching order issues
 3. **Extensibility**: Design plugin system for custom decorations
 4. **Performance profiling**: Identify bottlenecks with profiling
 
 ### Long-term Technical Debt
+
 1. **Architecture**: Consider MVC or similar pattern
 2. **State management**: Implement proper state management
 3. **Internationalization**: Add i18n support for UI strings
@@ -230,6 +265,7 @@ This improvement plan addresses code quality, maintainability, performance, and 
 ## Migration Strategy
 
 ### File Structure Changes
+
 ```
 EasyLanguage/
 ├── src/
@@ -268,6 +304,7 @@ EasyLanguage/
 ```
 
 ### Migration Steps
+
 1. Create new directory structure
 2. Move existing code to new modules
 3. Add TypeScript types
@@ -282,11 +319,13 @@ EasyLanguage/
 ## Risk Assessment
 
 ### High Risk Items
+
 - **TypeScript migration**: Breaking changes if not done carefully
 - **Code splitting**: Potential regressions during refactoring
 - **Performance changes**: May affect user experience
 
 ### Mitigation Strategies
+
 - Maintain backward compatibility
 - Incremental migration approach
 - Extensive testing at each phase
@@ -298,18 +337,21 @@ EasyLanguage/
 ## Success Metrics
 
 ### Code Quality Metrics
+
 - TypeScript adoption: 100%
 - Test coverage: ≥70%
 - Lint warnings: 0
 - Code duplication: <5%
 
 ### Performance Metrics
+
 - Decoration update time: <100ms
 - Startup time: <500ms
 - Memory usage: <50MB
 - CPU usage during typing: <5%
 
 ### User Experience Metrics
+
 - Extension crash rate: 0%
 - Feature adoption rate: >80%
 - User satisfaction: >4/5
@@ -320,12 +362,14 @@ EasyLanguage/
 ## Resource Requirements
 
 ### Development Resources
+
 - Developer time: ~10 weeks (1 developer)
 - Code review time: ~20 hours
 - Testing time: ~40 hours
 - Documentation time: ~20 hours
 
 ### Tools & Services
+
 - GitHub Actions (free tier)
 - npm packages (dev dependencies)
 - VS Code Extension Host
@@ -335,13 +379,13 @@ EasyLanguage/
 
 ## Timeline Summary
 
-| Phase | Duration | Priority | Deliverables |
-|-------|----------|----------|--------------|
-| Phase 1 | 2 weeks | HIGH | Stable core, optimized performance |
-| Phase 2 | 2 weeks | MEDIUM | TypeScript, tests, linting |
-| Phase 3 | 2 weeks | MEDIUM | Configuration, enhanced features |
-| Phase 4 | 2 weeks | MEDIUM | Build system, CI/CD, docs |
-| Phase 5 | 2 weeks | LOW | Advanced features |
+| Phase   | Duration | Priority | Deliverables                       |
+| ------- | -------- | -------- | ---------------------------------- |
+| Phase 1 | 2 weeks  | HIGH     | Stable core, optimized performance |
+| Phase 2 | 2 weeks  | MEDIUM   | TypeScript, tests, linting         |
+| Phase 3 | 2 weeks  | MEDIUM   | Configuration, enhanced features   |
+| Phase 4 | 2 weeks  | MEDIUM   | Build system, CI/CD, docs          |
+| Phase 5 | 2 weeks  | LOW      | Advanced features                  |
 
 **Total Duration: 10 weeks**
 
@@ -360,6 +404,7 @@ EasyLanguage/
 ## Success Criteria
 
 The improvement plan will be considered successful when:
+
 - ✅ All Phase 1-2 items are completed
 - ✅ Test coverage reaches 70%
 - ✅ No extension crashes reported
@@ -370,5 +415,5 @@ The improvement plan will be considered successful when:
 
 ---
 
-*Last Updated: 2026-08-29*
-*Plan Version: 1.0*
+_Last Updated: 2026-08-29_
+_Plan Version: 1.0_

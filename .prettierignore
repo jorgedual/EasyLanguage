@@ -1,0 +1,8 @@
+out/
+node_modules/
+coverage/
+src/
+test/
+*.vsix
+*.backup
+.husky/

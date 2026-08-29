@@ -9,20 +9,24 @@ Una extensión de Visual Studio Code diseñada para tomar notas de manera eficie
 Tu extensión resalta automáticamente las siguientes palabras clave con colores personalizados:
 
 #### Gestión de Tareas
+
 - `#todo` - Amarillo - Tareas pendientes
 - `#doing` - Azul - Tareas en progreso
 - `#done` - Verde - Tareas completadas
 
 #### Prioridades
+
 - `#alta` - Rojo - Prioridad alta
 - `#media` - Naranja - Prioridad media
 - `#task` - Amarillo dorado - Tarea general
 
 #### Validaciones
+
 - `#validar` - Rojo - Elementos a validar
 - `#check` - Verde brillante - Elementos verificados
 
 #### Organizadores
+
 - `Tema:` - Azul con texto claro - Títulos de tema
 - `##` - Amarillo claro - Subtítulo nivel 1
 - `###` - Verde claro - Subtítulo nivel 2
@@ -32,6 +36,7 @@ Tu extensión resalta automáticamente las siguientes palabras clave con colores
 - `🗸` - Verde tachado - Tareas completadas
 
 #### Comentarios Decorativos
+
 - `/***...****/` - Gris claro - Línea separadora larga
 - `/+...+/` - Gris medio - Comentario intermedio
 - `///` - Gris oscuro - Comentario de línea
@@ -92,11 +97,13 @@ Ninguno en este momento. Si encuentras algún problema, por favor reportalo.
 ## 🎉 Notas de Versión
 
 ### 0.0.2 (Última corrección)
+
 - Corrección de errores críticos
 - Todas las decoraciones funcionando correctamente
 - Código limpio y optimizado
 
 ### 0.0.1
+
 - Versión inicial
 
 **¡Disfruta tomando notas eficientes!**
