@@ -7,22 +7,27 @@ import { isSupportedLanguage, logError, safeExecute, validateEditor } from "../u
 let activeEditor: vscode.TextEditor | undefined;
 let activeRules: readonly DecorationRule[] = decorationRules;
 
+/** Tracks the editor decorations are applied to. */
 export function setActiveEditor(editor: vscode.TextEditor | undefined): void {
   activeEditor = editor;
 }
 
+/** Currently tracked editor (or undefined when none is active). */
 export function getActiveEditor(): vscode.TextEditor | undefined {
   return activeEditor;
 }
 
+/** Replaces the rule list used by the next decoration update (e.g. after a config change). */
 export function setDecorationRules(rules: readonly DecorationRule[]): void {
   activeRules = rules;
 }
 
+/** Rule list currently used when applying decorations. */
 export function getDecorationRules(): readonly DecorationRule[] {
   return activeRules;
 }
 
+/** Applies one rule's pattern to the whole document text, setting its decoration ranges. */
 export function applyRule(rule: DecorationRule, text: string): void {
   const decorationType = getDecorationType(rule.name);
 
@@ -51,6 +56,7 @@ export function applyRule(rule: DecorationRule, text: string): void {
   }
 }
 
+/** Re-applies every active rule to the tracked editor (no-op for unsupported languages/editors). */
 export function updateAllDecorations(): void {
   safeExecute(() => {
     if (!validateEditor(activeEditor)) {

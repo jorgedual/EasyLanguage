@@ -22,6 +22,10 @@ function applyConfiguration(): void {
   debouncedUpdateDecorations = createDebouncedUpdater(currentConfig.decorationUpdateDelay);
 }
 
+/**
+ * Extension entry point: loads config, initializes decorations, wires editor /
+ * document / config-change listeners, and registers all commands.
+ */
 export function activate(context: vscode.ExtensionContext): void {
   logInfo("EasyLanguage extension activating...");
 
@@ -75,6 +79,7 @@ export function activate(context: vscode.ExtensionContext): void {
   }
 }
 
+/** Disposes all decoration types on extension shutdown. */
 export function deactivate(): void {
   logInfo("EasyLanguage extension deactivating...");
 

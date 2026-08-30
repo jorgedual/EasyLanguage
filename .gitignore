@@ -24,6 +24,7 @@ coverage/
 
 # Compiled output
 out/
+dist/
 
 # Temporary files
 *.tmp

@@ -130,6 +130,10 @@ function filterTasks(getConfig: () => EasyLanguageConfig): void {
   }, "filter tasks operation");
 }
 
+/**
+ * Registers the task tool commands (stats, next/previous navigation, QuickPick
+ * filter) on the extension context, reading fresh config via `getConfig`.
+ */
 export function registerTaskCommands(
   context: vscode.ExtensionContext,
   getConfig: () => EasyLanguageConfig

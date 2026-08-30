@@ -63,6 +63,10 @@ const baseDecorationStyles: Record<DecorationTypeName, vscode.DecorationRenderOp
 
 const decorationTypes = new Map<string, vscode.TextEditorDecorationType>();
 
+/**
+ * Builds the decoration style map from base styles: excludes disabled entries,
+ * applies color overrides, and adds one style per custom tag.
+ */
 export function buildDecorationStyles(config: EasyLanguageConfig): DecorationStyleMap {
   const styles: DecorationStyleMap = new Map();
 
@@ -104,6 +108,7 @@ export function buildDecorationStyles(config: EasyLanguageConfig): DecorationSty
   return styles;
 }
 
+/** (Re)creates all decoration types from the given config. Re-runnable: disposes previous types first. */
 export function initializeDecorationTypes(config: EasyLanguageConfig): void {
   try {
     disposeAllDecorationTypes();
@@ -119,16 +124,19 @@ export function initializeDecorationTypes(config: EasyLanguageConfig): void {
   }
 }
 
+/** Looks up a live decoration type by decoration/tag name. */
 export function getDecorationType(
   name: string
 ): vscode.TextEditorDecorationType | undefined {
   return decorationTypes.get(name);
 }
 
+/** Number of currently registered decoration types (mainly for tests). */
 export function getDecorationTypeCount(): number {
   return decorationTypes.size;
 }
 
+/** Disposes and clears every registered decoration type. */
 export function disposeAllDecorationTypes(): void {
   try {
     for (const decorationType of decorationTypes.values()) {

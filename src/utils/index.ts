@@ -3,6 +3,10 @@ import type { DateFormat } from "../types";
 
 const SUPPORTED_LANGUAGES: readonly string[] = ["easy", "plaintext"];
 
+/**
+ * Returns a debounced wrapper that invokes `callback` after `delay` ms of inactivity.
+ * Each call within the window resets the timer.
+ */
 export function debounce<T extends (...args: never[]) => void>(
   callback: T,
   delay: number
@@ -17,6 +21,7 @@ export function debounce<T extends (...args: never[]) => void>(
   };
 }
 
+/** Formats the current local date according to the given `DateFormat` token string. */
 export function getCurrentDate(format: DateFormat = "YYYY-MM-DD"): string {
   const now = new Date();
   const year = now.getFullYear().toString();
@@ -26,6 +31,7 @@ export function getCurrentDate(format: DateFormat = "YYYY-MM-DD"): string {
   return format.replace("YYYY", year).replace("MM", month).replace("DD", day);
 }
 
+/** Type guard that checks an active text editor and its document are available. */
 export function validateEditor(
   editor: vscode.TextEditor | undefined
 ): editor is vscode.TextEditor {
@@ -40,6 +46,7 @@ export function validateEditor(
   return true;
 }
 
+/** Returns true when the language id is decorated by this extension ("easy" or "plaintext"). */
 export function isSupportedLanguage(languageId: string | undefined): boolean {
   if (!languageId) {
     return false;
@@ -48,6 +55,10 @@ export function isSupportedLanguage(languageId: string | undefined): boolean {
   return SUPPORTED_LANGUAGES.includes(languageId);
 }
 
+/**
+ * Runs `callback`, catching any error: logs it, shows a user-facing message,
+ * and returns null instead of crashing the extension host.
+ */
 export function safeExecute<T>(callback: () => T, context: string): T | null {
   try {
     return callback();
@@ -59,16 +70,19 @@ export function safeExecute<T>(callback: () => T, context: string): T | null {
   }
 }
 
+/** Logs an informational message with the `EasyLanguage:` prefix. */
 export function logInfo(message: string, data?: unknown): void {
   const logData = data !== undefined ? ` ${JSON.stringify(data)}` : "";
   console.log(`EasyLanguage: ${message}${logData}`);
 }
 
+/** Logs an error message (with stack when available) to the console. */
 export function logError(message: string, error?: Error | null): void {
   const errorData = error ? ` ${error.message}\n${error.stack ?? ""}` : "";
   console.error(`EasyLanguage: ${message}${errorData}`);
 }
 
+/** Disposes every disposable, logging (but not throwing on) individual failures. */
 export function disposeAll(disposables: vscode.Disposable[]): void {
   for (const disposable of disposables) {
     try {

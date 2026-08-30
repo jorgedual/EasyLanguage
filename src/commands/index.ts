@@ -17,6 +17,7 @@ function insertAtLineStart(editor: vscode.TextEditor, text: string): void {
   });
 }
 
+/** Command handler: inserts a "🗸 " at the start of the current line's text. */
 export function insertText(): void {
   safeExecute(() => {
     const editor = vscode.window.activeTextEditor;
@@ -31,6 +32,7 @@ export function insertText(): void {
   }, "insert text operation");
 }
 
+/** Command handler: inserts a "□ " at the start of the current line's text. */
 export function insertSquare(): void {
   safeExecute(() => {
     const editor = vscode.window.activeTextEditor;
@@ -45,6 +47,7 @@ export function insertSquare(): void {
   }, "insert square operation");
 }
 
+/** Command handler: inserts the current date at the cursor, honoring `easyLanguage.dateFormat`. */
 export function insertCurrentDate(): void {
   safeExecute(() => {
     const editor = vscode.window.activeTextEditor;
@@ -65,6 +68,7 @@ export function insertCurrentDate(): void {
   }, "insert date operation");
 }
 
+/** Registers all text/date insertion commands on the extension context. */
 export function registerCommands(context: vscode.ExtensionContext): void {
   context.subscriptions.push(
     vscode.commands.registerCommand("extension.insertText", insertText),

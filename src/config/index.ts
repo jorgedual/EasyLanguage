@@ -9,6 +9,7 @@ const DATE_FORMATS: readonly DateFormat[] = ["YYYY-MM-DD", "DD/MM/YYYY", "MM/DD/
 export const DEFAULT_DECORATION_UPDATE_DELAY = 300;
 export const DEFAULT_DATE_FORMAT: DateFormat = "YYYY-MM-DD";
 
+/** Returns a config object with documented defaults (used for tests and fallbacks). */
 export function createDefaultConfig(): EasyLanguageConfig {
   return {
     decorationUpdateDelay: DEFAULT_DECORATION_UPDATE_DELAY,
@@ -20,6 +21,7 @@ export function createDefaultConfig(): EasyLanguageConfig {
   };
 }
 
+/** Type guard for `#RGB`, `#RRGGBB`, and `#RRGGBBAA` color strings. */
 export function isValidColor(value: unknown): value is string {
   return typeof value === "string" && HEX_COLOR_PATTERN.test(value);
 }
@@ -28,6 +30,11 @@ function isValidCustomTagName(value: unknown): value is string {
   return typeof value === "string" && CUSTOM_TAG_NAME_PATTERN.test(value);
 }
 
+/**
+ * Parses and validates raw `easyLanguage.customTags` entries.
+ * Invalid tags or colors are skipped with a user-visible warning; a leading
+ * `#` on the tag name is tolerated and stripped.
+ */
 export function parseCustomTags(raw: unknown): CustomTagDefinition[] {
   if (!Array.isArray(raw)) {
     return [];
@@ -113,6 +120,10 @@ function parseColorOverrides(raw: unknown): Record<string, string> {
   return overrides;
 }
 
+/**
+ * Loads and validates all settings from the `easyLanguage` section.
+ * Invalid values fall back to their documented defaults.
+ */
 export function loadConfig(): EasyLanguageConfig {
   const configuration = vscode.workspace.getConfiguration(CONFIG_SECTION);
 
@@ -130,6 +141,7 @@ export function loadConfig(): EasyLanguageConfig {
   };
 }
 
+/** Subscribes `callback` to configuration changes affecting the `easyLanguage` section only. */
 export function watchConfig(callback: () => void): vscode.Disposable {
   return vscode.workspace.onDidChangeConfiguration((event) => {
     if (event.affectsConfiguration(CONFIG_SECTION)) {

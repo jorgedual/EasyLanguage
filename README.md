@@ -128,46 +128,41 @@ Atajos sugeridos (configúralos en «Métodos abreviados de teclado»):
 
 Abre el archivo `test-example.easy` incluido en la extensión para ver ejemplos de todos los colores y funcionalidades.
 
-## 🛠️ Instalación para Desarrollo
+## 🛠️ Desarrollo
 
-1. Clona este repositorio
-2. Abre el proyecto en VS Code
-3. Presiona F5 para abrir una nueva ventana con la extensión cargada
-4. Crea un archivo `.easy` para probar
-
-## 📦 Instalación de la Extensión
-
-Si ya tienes el archivo `easy-0.0.1.vsix`:
+Consulta la [guía de contribución](./CONTRIBUTING.md) para configurar tu
+entorno, la estructura del proyecto y el flujo de trabajo. Resumen:
 
 ```bash
-code --install-extension easy-0.0.1.vsix
+npm install          # dependencias
+npm run compile      # build de desarrollo (dist/, con source maps)
+npm run watch        # recompilación automática
+npm test             # lint + tests (Jest)
+npx vsce package     # generar .vsix
 ```
 
-## 🔧 Correcciones Aplicadas (v0.0.2)
+Presiona **F5** en VS Code para probar la extensión en una ventana de desarrollo.
 
-- ✅ Corregido `activationEvents` en package.json (eliminado espacio extra)
-- ✅ Eliminado código duplicado al final de extension.js
-- ✅ Agregadas correctamente las decoraciones para #todo, #doing, #done
-- ✅ Código limpio y funcional
+## 📦 Instalación
+
+Desde un archivo `.vsix` (disponible en cada [release](../../releases)):
+
+```bash
+code --install-extension easy-<versión>.vsix
+```
 
 ## 📝 Requisitos
 
 - Visual Studio Code versión 1.52.0 o superior
 
-## 🐛 Problemas Conocidos
+## 🐛 Problemas y Soporte
 
-Ninguno en este momento. Si encuentras algún problema, por favor reportalo.
+¿Algo no funciona como esperabas? Revisa la
+[guía de solución de problemas](./TROUBLESHOOTING.md) antes de reportar.
+Si encuentras un bug, abre un issue en el repositorio.
 
-## 🎉 Notas de Versión
+## 📜 Changelog
 
-### 0.0.2 (Última corrección)
-
-- Corrección de errores críticos
-- Todas las decoraciones funcionando correctamente
-- Código limpio y optimizado
-
-### 0.0.1
-
-- Versión inicial
+Los cambios de cada versión están documentados en [CHANGELOG.md](./CHANGELOG.md).
 
 **¡Disfruta tomando notas eficientes!**

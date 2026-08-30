@@ -1,5 +1,6 @@
 import type { DecorationRule, EasyLanguageConfig } from "../types";
 
+/** Static per-decoration regex patterns (global + multiline where applicable). */
 export const patterns = {
   tema: /^Tema:(.*)$/gm,
   fecha: /^fecha:(.*)$/gm,
@@ -25,6 +26,7 @@ export const patterns = {
 
 export type PatternName = keyof typeof patterns;
 
+/** Ordered rule list mapping each pattern to its decoration name and hover message. */
 export const decorationRules: readonly DecorationRule[] = [
   { name: "tema", pattern: patterns.tema, hoverMessage: "Tema" },
   { name: "fecha", pattern: patterns.fecha, hoverMessage: "fecha" },
@@ -48,6 +50,7 @@ export const decorationRules: readonly DecorationRule[] = [
   { name: "done", pattern: patterns.done, hoverMessage: "Completado" },
 ];
 
+/** Built-in `#tag` names that must never be matched by the `#` title pattern. */
 export const RESERVED_TAG_NAMES: readonly string[] = [
   "todo",
   "doing",
@@ -59,11 +62,17 @@ export const RESERVED_TAG_NAMES: readonly string[] = [
   "media",
 ];
 
+/** Builds the `#` title pattern excluding the given tag names (reserved + custom). */
 export function buildTituloPattern(excludedTagNames: readonly string[]): RegExp {
   const excluded = excludedTagNames.length > 0 ? excludedTagNames.join("|") : "a^";
   return new RegExp(`^#(?!${excluded})([^#].*)$`, "gm");
 }
 
+/**
+ * Builds the active decoration rule list for a config: filters disabled rules,
+ * adds one rule per custom tag, and rebinds the title pattern to exclude
+ * custom tag names.
+ */
 export function buildDecorationRules(config: EasyLanguageConfig): DecorationRule[] {
   const customTagNames = config.customTags.map((customTag) => customTag.tag);
   const tituloPattern = buildTituloPattern([...RESERVED_TAG_NAMES, ...customTagNames]);

@@ -31,7 +31,7 @@
     "onLanguage:easy",
     "onLanguage:plaintext"
   ],
-  "main": "./out/extension.js",
+  "main": "./dist/extension.js",
   "contributes": {
     "snippets": [
       {
@@ -219,13 +219,20 @@
     }
   },
   "scripts": {
-    "compile": "tsc -p .",
-    "watch": "tsc -watch -p .",
+    "vscode:prepublish": "npm run package",
+    "compile": "node esbuild.js",
+    "watch": "node esbuild.js --watch",
+    "package": "npm run clean && npm run typecheck && npm run lint && npm test && node esbuild.js --production",
+    "typecheck": "tsc --noEmit",
+    "clean": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\"",
     "lint": "eslint src test",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"*.{js,json,md}\"",
     "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\" \"*.{js,json,md}\"",
     "test": "jest",
     "test:coverage": "jest --coverage",
+    "release:patch": "npm version patch && git push --follow-tags",
+    "release:minor": "npm version minor && git push --follow-tags",
+    "release:major": "npm version major && git push --follow-tags",
     "pretest": "npm run lint",
     "prepare": "husky"
   },
@@ -243,6 +250,8 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^26.4.0",
     "@types/vscode": "1.52.0",
+    "@vscode/vsce": "^3.9.2",
+    "esbuild": "^0.28.2",
     "eslint": "^10.9.1",
     "husky": "^9.1.7",
     "jest": "^30.5.0",

@@ -1,5 +1,6 @@
 import type { TaskLineInfo } from "../types";
 
+/** Tag names counted by the statistics command (custom tags are appended at runtime). */
 export const STAT_TAG_NAMES: readonly string[] = [
   "todo",
   "doing",
@@ -11,6 +12,7 @@ export const STAT_TAG_NAMES: readonly string[] = [
   "check",
 ];
 
+/** Counts occurrences of each `#tag` in `text`, returning a tag → count record. */
 export function computeTaskStats(
   text: string,
   tagNames: readonly string[]
@@ -25,10 +27,12 @@ export function computeTaskStats(
   return stats;
 }
 
+/** Sums every per-tag count into a single total. */
 export function countTotalTasks(stats: Record<string, number>): number {
   return Object.values(stats).reduce((total, count) => total + count, 0);
 }
 
+/** Returns every line (with 0-based number, text, and matched tags) containing at least one task tag. */
 export function findTaskLines(
   lines: readonly string[],
   tagNames: readonly string[]
@@ -46,6 +50,7 @@ export function findTaskLines(
   return taskLines;
 }
 
+/** Finds the first task line located after `currentLine`, or undefined. */
 export function findNextTaskLine(
   currentLine: number,
   taskLines: readonly TaskLineInfo[]
@@ -53,6 +58,7 @@ export function findNextTaskLine(
   return taskLines.find((taskLine) => taskLine.lineNumber > currentLine);
 }
 
+/** Finds the closest task line located before `currentLine`, or undefined. */
 export function findPrevTaskLine(
   currentLine: number,
   taskLines: readonly TaskLineInfo[]
