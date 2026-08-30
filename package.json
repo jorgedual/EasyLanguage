@@ -180,12 +180,15 @@
               "alta",
               "task",
               "media",
+              "baja",
               "comentarioUno",
               "comentarioDos",
               "comentarioTres",
               "todo",
               "doing",
-              "done"
+              "done",
+              "blocked",
+              "waiting"
             ]
           },
           "default": [],

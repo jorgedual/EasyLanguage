@@ -1,6 +1,9 @@
 import {
+  PRIORITY_TAG_NAMES,
+  STATE_TAG_NAMES,
   STAT_TAG_NAMES,
   classifyDeadline,
+  computeStatePriorityMatrix,
   collectTaskDeadlines,
   computeTaskStats,
   countTotalTasks,
@@ -173,5 +176,55 @@ describe("task deadlines", () => {
 
       expect(deadlines[0]).toMatchObject({ status: "overdue", daysUntil: -2 });
     });
+  });
+});
+
+describe("computeStatePriorityMatrix", () => {
+  it("counts only lines that combine a state and a priority", () => {
+    const lines = [
+      "#todo #alta primera",
+      "#todo #baja segunda",
+      "#todo #baja tercera",
+      "#doing #media cuarta",
+    ];
+
+    expect(
+      computeStatePriorityMatrix(lines, STATE_TAG_NAMES, PRIORITY_TAG_NAMES)
+    ).toEqual({
+      todo: { alta: 1, baja: 2 },
+      doing: { media: 1 },
+    });
+  });
+
+  it("skips lines with only a state or only a priority", () => {
+    const lines = ["#todo sin prioridad", "#alta sin estado", "texto plano"];
+
+    expect(computeStatePriorityMatrix(lines, STATE_TAG_NAMES, PRIORITY_TAG_NAMES)).toEqual({});
+  });
+
+  it("follows the canonical order of the state and priority lists", () => {
+    const lines = ["#doing #todo #media #alta mezcla"];
+
+    expect(computeStatePriorityMatrix(lines, STATE_TAG_NAMES, PRIORITY_TAG_NAMES)).toEqual({
+      todo: { alta: 1 },
+    });
+  });
+
+  it("covers every built-in state and priority", () => {
+    const lines = [
+      "#todo #alta a",
+      "#doing #media b",
+      "#done #baja c",
+      "#blocked #alta d",
+      "#waiting #media e",
+    ];
+
+    const matrix = computeStatePriorityMatrix(lines, STATE_TAG_NAMES, PRIORITY_TAG_NAMES);
+
+    expect(Object.keys(matrix).sort()).toEqual(["blocked", "doing", "done", "todo", "waiting"]);
+  });
+
+  it("returns an empty matrix for documents without combined tasks", () => {
+    expect(computeStatePriorityMatrix([], STATE_TAG_NAMES, PRIORITY_TAG_NAMES)).toEqual({});
   });
 });

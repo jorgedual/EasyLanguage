@@ -35,7 +35,7 @@ describe("extension", () => {
 
       activate(context);
 
-      expect(vscode.window.createTextEditorDecorationType).toHaveBeenCalledTimes(20);
+      expect(vscode.window.createTextEditorDecorationType).toHaveBeenCalledTimes(23);
       expect(vscode.commands.registerCommand).toHaveBeenCalledTimes(10);
       expect(vscode.languages.registerCompletionItemProvider).toHaveBeenCalledTimes(2);
       expect(vscode.languages.registerDocumentFormattingEditProvider).toHaveBeenCalledTimes(2);
@@ -49,7 +49,7 @@ describe("extension", () => {
 
       activate(createContext());
 
-      expect(vscode.window.createTextEditorDecorationType).toHaveBeenCalledTimes(21);
+      expect(vscode.window.createTextEditorDecorationType).toHaveBeenCalledTimes(24);
     });
 
     it("uses the configured debounce delay", () => {
@@ -63,7 +63,7 @@ describe("extension", () => {
       jest.advanceTimersByTime(99);
       expect(setDecorations).not.toHaveBeenCalled();
       jest.advanceTimersByTime(1);
-      expect(setDecorations).toHaveBeenCalledTimes(20);
+      expect(setDecorations).toHaveBeenCalledTimes(23);
     });
 
     it("updates decorations for the initial active editor after the debounce delay", () => {
@@ -74,7 +74,7 @@ describe("extension", () => {
 
       expect(setDecorations).not.toHaveBeenCalled();
       jest.advanceTimersByTime(300);
-      expect(setDecorations).toHaveBeenCalledTimes(20);
+      expect(setDecorations).toHaveBeenCalledTimes(23);
     });
 
     it("reacts to active editor changes", () => {
@@ -84,7 +84,7 @@ describe("extension", () => {
       emitActiveEditorChange(editor as never);
 
       jest.advanceTimersByTime(300);
-      expect(setDecorations).toHaveBeenCalledTimes(20);
+      expect(setDecorations).toHaveBeenCalledTimes(23);
     });
 
     it("reacts to document changes in the active editor", () => {
@@ -98,7 +98,7 @@ describe("extension", () => {
       emitDocumentChange({ document: (editor as never as { document: unknown }).document });
 
       jest.advanceTimersByTime(300);
-      expect(setDecorations).toHaveBeenCalledTimes(20);
+      expect(setDecorations).toHaveBeenCalledTimes(23);
     });
 
     it("ignores document changes for inactive editors", () => {
@@ -128,7 +128,7 @@ describe("extension", () => {
       });
       emitConfigurationChange(["easyLanguage.customTags"]);
 
-      expect(setDecorations).toHaveBeenCalledTimes(21);
+      expect(setDecorations).toHaveBeenCalledTimes(24);
     });
 
     it("ignores configuration changes outside the easyLanguage section", () => {

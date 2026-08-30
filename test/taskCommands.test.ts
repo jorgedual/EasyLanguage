@@ -329,3 +329,44 @@ describe("phase 5 task commands", () => {
     });
   });
 });
+
+describe("stats with state x priority breakdown", () => {
+  beforeEach(() => {
+    resetVscodeMock();
+    jest.spyOn(console, "log").mockImplementation(() => undefined);
+    jest.spyOn(console, "error").mockImplementation(() => undefined);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it("appends the cross breakdown when lines combine state and priority", () => {
+    const { editor } = createMockEditor([
+      "#todo #alta primera",
+      "#todo #baja segunda",
+      "#todo #baja tercera",
+      "#doing #media cuarta",
+      "#todo sin prioridad",
+    ]);
+    vscode.window.activeTextEditor = editor;
+
+    showTaskStats(makeConfig());
+
+    expect(vscode.window.showInformationMessage).toHaveBeenCalledWith(
+      "Easy: 9 tareas — #todo: 4  |  #doing: 1  |  #alta: 1  |  #media: 1  |  #baja: 2" +
+        " — Cruce: todo+alta: 1  |  todo+baja: 2  |  doing+media: 1"
+    );
+  });
+
+  it("includes new state and priority tags in the breakdown", () => {
+    const { editor } = createMockEditor(["#blocked #baja esperando", "#waiting revisión"]);
+    vscode.window.activeTextEditor = editor;
+
+    showTaskStats(makeConfig());
+
+    expect(vscode.window.showInformationMessage).toHaveBeenCalledWith(
+      "Easy: 3 tareas — #blocked: 1  |  #waiting: 1  |  #baja: 1 — Cruce: blocked+baja: 1"
+    );
+  });
+});

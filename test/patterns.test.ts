@@ -60,7 +60,19 @@ describe("patterns", () => {
     });
 
     it("# does not match known tags", () => {
-      for (const tag of ["todo", "doing", "done", "validar", "check", "alta", "task", "media"]) {
+      for (const tag of [
+        "todo",
+        "doing",
+        "done",
+        "blocked",
+        "waiting",
+        "validar",
+        "check",
+        "alta",
+        "task",
+        "media",
+        "baja",
+      ]) {
         expect(matchesOf(patterns.titulo, `#${tag} texto`)).toEqual([]);
       }
     });
@@ -75,8 +87,11 @@ describe("patterns", () => {
       ["todo", "#todo"],
       ["doing", "#doing"],
       ["done", "#done"],
+      ["blocked", "#blocked"],
+      ["waiting", "#waiting"],
       ["alta", "#alta"],
       ["media", "#media"],
+      ["baja", "#baja"],
       ["task", "#task"],
       ["validar", "#validar"],
       ["check", "#check"],
@@ -88,6 +103,8 @@ describe("patterns", () => {
     it("does not cross-match tags", () => {
       expect(matchesOf(patterns.todo, "#doing algo")).toEqual([]);
       expect(matchesOf(patterns.doing, "#done algo")).toEqual([]);
+      expect(matchesOf(patterns.baja, "#blocked algo")).toEqual([]);
+      expect(matchesOf(patterns.blocked, "#waiting algo")).toEqual([]);
     });
   });
 
@@ -165,7 +182,7 @@ describe("patterns", () => {
     it("returns the fixed rules with the default config", () => {
       const rules = buildDecorationRules(createDefaultConfig());
 
-      expect(rules).toHaveLength(20);
+      expect(rules).toHaveLength(23);
       expect(rules.map((rule) => rule.name)).toContain("titulo");
     });
 
@@ -174,7 +191,7 @@ describe("patterns", () => {
 
       const rules = buildDecorationRules(config);
 
-      expect(rules).toHaveLength(18);
+      expect(rules).toHaveLength(21);
       expect(rules.map((rule) => rule.name)).not.toContain("todo");
       expect(rules.map((rule) => rule.name)).not.toContain("tema");
     });
@@ -188,7 +205,7 @@ describe("patterns", () => {
 
       const rules = buildDecorationRules(config);
 
-      expect(rules).toHaveLength(21);
+      expect(rules).toHaveLength(24);
       const urgente = rules.find((rule) => rule.name === "urgente");
       expect(urgente?.hoverMessage).toBe("Urgente");
       expect(urgente?.pattern.test("#urgente revisar")).toBe(true);

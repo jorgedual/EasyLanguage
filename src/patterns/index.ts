@@ -6,7 +6,7 @@ export const patterns = {
   fecha: /^fecha:(.*)$/gm,
   subTituloDos: /^###(.*)$/gm,
   subTituloUno: /^##([^#].*)$/gm,
-  titulo: /^#(?!todo|doing|done|validar|check|alta|task|media)([^#].*)$/gm,
+  titulo: /^#(?!todo|doing|done|blocked|waiting|validar|check|alta|task|media|baja)([^#].*)$/gm,
   nuevoTexto: />>(.*)/g,
   negrita: /\*\*(.*)/g,
   checkmark: /🗸(.*)/g,
@@ -16,12 +16,15 @@ export const patterns = {
   alta: /#alta/g,
   task: /#task/g,
   media: /#media/g,
+  baja: /#baja/g,
   comentarioUno: /\/\*\*+\//g,
   comentarioDos: /\/\+(.*?)\+\//g,
   comentarioTres: /\/\/\/(.*)$/gm,
   todo: /#todo/g,
   doing: /#doing/g,
   done: /#done/g,
+  blocked: /#blocked/g,
+  waiting: /#waiting/g,
 } as const;
 
 export type PatternName = keyof typeof patterns;
@@ -42,12 +45,15 @@ export const decorationRules: readonly DecorationRule[] = [
   { name: "alta", pattern: patterns.alta, hoverMessage: "alta" },
   { name: "task", pattern: patterns.task, hoverMessage: "task" },
   { name: "media", pattern: patterns.media, hoverMessage: "media" },
+  { name: "baja", pattern: patterns.baja, hoverMessage: "Prioridad baja" },
   { name: "comentarioUno", pattern: patterns.comentarioUno, hoverMessage: "comentarioUno" },
   { name: "comentarioDos", pattern: patterns.comentarioDos, hoverMessage: "comentarioDos" },
   { name: "comentarioTres", pattern: patterns.comentarioTres, hoverMessage: "comentarioTres" },
   { name: "todo", pattern: patterns.todo, hoverMessage: "Tarea pendiente" },
   { name: "doing", pattern: patterns.doing, hoverMessage: "En progreso" },
   { name: "done", pattern: patterns.done, hoverMessage: "Completado" },
+  { name: "blocked", pattern: patterns.blocked, hoverMessage: "Tarea bloqueada" },
+  { name: "waiting", pattern: patterns.waiting, hoverMessage: "En espera" },
 ];
 
 /** Built-in `#tag` names that must never be matched by the `#` title pattern. */
@@ -55,11 +61,14 @@ export const RESERVED_TAG_NAMES: readonly string[] = [
   "todo",
   "doing",
   "done",
+  "blocked",
+  "waiting",
   "validar",
   "check",
   "alta",
   "task",
   "media",
+  "baja",
 ];
 
 /** Builds the `#` title pattern excluding the given tag names (reserved + custom). */

@@ -25,12 +25,15 @@ const ALL_FIXED_NAMES: DecorationTypeName[] = [
   "alta",
   "task",
   "media",
+  "baja",
   "comentarioUno",
   "comentarioDos",
   "comentarioTres",
   "todo",
   "doing",
   "done",
+  "blocked",
+  "waiting",
 ];
 
 function makeConfig(overrides: Partial<EasyLanguageConfig> = {}): EasyLanguageConfig {
@@ -53,9 +56,9 @@ describe("decorations", () => {
     it("creates one decoration type per style with the default config", () => {
       initializeDecorationTypes(makeConfig());
 
-      expect(getDecorationTypeCount()).toBe(20);
-      expect(vscode.window.createTextEditorDecorationType).toHaveBeenCalledTimes(20);
-      expect(getCreatedDecorationTypes()).toHaveLength(20);
+      expect(getDecorationTypeCount()).toBe(23);
+      expect(vscode.window.createTextEditorDecorationType).toHaveBeenCalledTimes(23);
+      expect(getCreatedDecorationTypes()).toHaveLength(23);
     });
 
     it("makes every type retrievable by name", () => {
@@ -71,7 +74,7 @@ describe("decorations", () => {
         makeConfig({ disabledDecorations: new Set(["todo", "checkmark"]) })
       );
 
-      expect(getDecorationTypeCount()).toBe(18);
+      expect(getDecorationTypeCount()).toBe(21);
       expect(getDecorationType("todo")).toBeUndefined();
       expect(getDecorationType("checkmark")).toBeUndefined();
     });
@@ -83,7 +86,7 @@ describe("decorations", () => {
         })
       );
 
-      expect(getDecorationTypeCount()).toBe(21);
+      expect(getDecorationTypeCount()).toBe(24);
       expect(getDecorationType("urgente")).toBeDefined();
     });
 
@@ -95,7 +98,7 @@ describe("decorations", () => {
         makeConfig({ customTags: [{ tag: "urgente", backgroundColor: "#FF00FF" }] })
       );
 
-      expect(getDecorationTypeCount()).toBe(21);
+      expect(getDecorationTypeCount()).toBe(24);
       for (const type of firstBatch) {
         expect(type.dispose).toHaveBeenCalledTimes(1);
       }
@@ -133,7 +136,7 @@ describe("decorations", () => {
 
       expect(styles.has("tema")).toBe(false);
       expect(styles.has("fecha")).toBe(false);
-      expect(styles.size).toBe(18);
+      expect(styles.size).toBe(21);
     });
 
     it("builds styles for custom tags", () => {

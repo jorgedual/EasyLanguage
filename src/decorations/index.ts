@@ -6,6 +6,18 @@ const baseDecorationStyles: Record<DecorationTypeName, vscode.DecorationRenderOp
   todo: { backgroundColor: "#FFD700", color: "black", borderRadius: "4px", fontWeight: "bold" },
   doing: { backgroundColor: "#1E90FF", color: "white", borderRadius: "4px", fontWeight: "bold" },
   done: { backgroundColor: "#32CD32", color: "white", borderRadius: "4px", fontWeight: "bold" },
+  blocked: {
+    backgroundColor: "#E06C75",
+    color: "#FFFFFF",
+    borderRadius: "4px",
+    fontWeight: "bold",
+  },
+  waiting: {
+    backgroundColor: "#B39DDB",
+    color: "#000000",
+    borderRadius: "4px",
+    fontWeight: "bold",
+  },
   tema: {
     backgroundColor: "#000000",
     color: "#FFFFFF",
@@ -27,6 +39,7 @@ const baseDecorationStyles: Record<DecorationTypeName, vscode.DecorationRenderOp
   alta: { backgroundColor: "#F62E2E", color: "#FFC8C8" },
   task: { backgroundColor: "#FFF893", color: "#CC8400" },
   media: { backgroundColor: "#F3DB00", color: "#727272" },
+  baja: { color: "#4CAF50", fontWeight: "bold" },
   fecha: {
     backgroundColor: "#F8F8F8",
     color: "#474747",

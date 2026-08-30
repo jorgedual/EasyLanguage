@@ -6,12 +6,21 @@ export const STAT_TAG_NAMES: readonly string[] = [
   "todo",
   "doing",
   "done",
+  "blocked",
+  "waiting",
   "alta",
   "media",
+  "baja",
   "task",
   "validar",
   "check",
 ];
+
+/** Built-in state tags (what a task is: its workflow position). */
+export const STATE_TAG_NAMES: readonly string[] = ["todo", "doing", "done", "blocked", "waiting"];
+
+/** Built-in priority tags (how urgent a task is). */
+export const PRIORITY_TAG_NAMES: readonly string[] = ["alta", "media", "baja"];
 
 /** Counts occurrences of each `#tag` in `text`, returning a tag → count record. */
 export function computeTaskStats(
@@ -66,6 +75,34 @@ export function findPrevTaskLine(
 ): TaskLineInfo | undefined {
   const candidates = taskLines.filter((taskLine) => taskLine.lineNumber < currentLine);
   return candidates.length > 0 ? candidates[candidates.length - 1] : undefined;
+}
+
+/**
+ * Cross-tabulates state × priority tag usage, line by line. Only lines that
+ * carry BOTH a state tag and a priority tag are counted (each contributing to
+ * its first listed state and first listed priority). Rows are states, columns
+ * are priorities; only non-zero combinations are included.
+ */
+export function computeStatePriorityMatrix(
+  lines: readonly string[],
+  states: readonly string[],
+  priorities: readonly string[]
+): Record<string, Record<string, number>> {
+  const matrix: Record<string, Record<string, number>> = {};
+
+  for (const line of lines) {
+    const state = states.find((tagName) => new RegExp(`#${tagName}`).test(line));
+    const priority = priorities.find((tagName) => new RegExp(`#${tagName}`).test(line));
+
+    if (!state || !priority) {
+      continue;
+    }
+
+    const row = matrix[state] ?? (matrix[state] = {});
+    row[priority] = (row[priority] ?? 0) + 1;
+  }
+
+  return matrix;
 }
 
 /** Returns the first valid date found in the line (any supported format), or null. */

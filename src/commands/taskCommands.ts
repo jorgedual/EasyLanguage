@@ -1,8 +1,11 @@
 import * as vscode from "vscode";
 import type { EasyLanguageConfig, TaskDeadlineInfo, TaskLineInfo } from "../types";
 import {
+  PRIORITY_TAG_NAMES,
+  STATE_TAG_NAMES,
   STAT_TAG_NAMES,
   collectTaskDeadlines,
+  computeStatePriorityMatrix,
   computeTaskStats,
   countTotalTasks,
   findNextTaskLine,
@@ -66,7 +69,22 @@ function showTaskStats(getConfig: () => EasyLanguageConfig): void {
       .map((tagName) => `#${tagName}: ${stats[tagName]}`)
       .join("  |  ");
 
-    void vscode.window.showInformationMessage(`Easy: ${total} tareas — ${breakdown}`);
+    const matrix = computeStatePriorityMatrix(
+      getDocumentLines(editor),
+      STATE_TAG_NAMES,
+      PRIORITY_TAG_NAMES
+    );
+    const crossBreakdown = Object.entries(matrix)
+      .flatMap(([state, priorities]) =>
+        Object.entries(priorities).map(([priority, count]) => `${state}+${priority}: ${count}`)
+      )
+      .join("  |  ");
+
+    const crossSegment = crossBreakdown.length > 0 ? ` — Cruce: ${crossBreakdown}` : "";
+
+    void vscode.window.showInformationMessage(
+      `Easy: ${total} tareas — ${breakdown}${crossSegment}`
+    );
   }, "show task stats operation");
 }
 

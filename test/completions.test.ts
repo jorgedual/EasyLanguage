@@ -41,8 +41,11 @@ describe("buildTagCompletions", () => {
       "#todo",
       "#doing",
       "#done",
+      "#blocked",
+      "#waiting",
       "#alta",
       "#media",
+      "#baja",
       "#task",
       "#validar",
       "#check",
@@ -52,6 +55,9 @@ describe("buildTagCompletions", () => {
       detail: "Tarea pendiente",
       kind: "tag",
     });
+    expect(completions[5]).toMatchObject({ detail: "Prioridad alta" });
+    expect(completions[7]).toMatchObject({ detail: "Prioridad baja" });
+    expect(completions[3]).toMatchObject({ detail: "Tarea bloqueada" });
   });
 
   it("appends custom tags with their hover message as documentation", () => {
@@ -123,7 +129,7 @@ describe("registerCompletionProviders", () => {
 
     const result = getProvider().provideCompletionItems(fakeDocument(["#"]), new vscode.Position(0, 1));
 
-    expect(result.items).toHaveLength(8);
+    expect(result.items).toHaveLength(11);
   });
 
   it("includes custom tags in the suggestions", () => {
@@ -134,7 +140,7 @@ describe("registerCompletionProviders", () => {
 
     const result = getProvider().provideCompletionItems(fakeDocument(["#"]), new vscode.Position(0, 1));
 
-    expect(result.items).toHaveLength(9);
+    expect(result.items).toHaveLength(12);
   });
 
   it("returns line-start suggestions on an empty line", () => {

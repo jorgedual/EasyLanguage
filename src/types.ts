@@ -17,12 +17,15 @@ export type DecorationTypeName =
   | "alta"
   | "task"
   | "media"
+  | "baja"
   | "comentarioUno"
   | "comentarioDos"
   | "comentarioTres"
   | "todo"
   | "doing"
-  | "done";
+  | "done"
+  | "blocked"
+  | "waiting";
 
 export interface DecorationRule {
   readonly name: string;
