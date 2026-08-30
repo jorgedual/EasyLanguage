@@ -7,6 +7,8 @@ adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.0]
+
 ### Added
 
 - Autocompletado de etiquetas integradas y personalizadas (al escribir `#`) y de

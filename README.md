@@ -1,12 +1,26 @@
 # Easy Language - Extensión para Notas Eficientes
 
-Una extensión de Visual Studio Code diseñada para tomar notas de manera eficiente con colores personalizados y atajos de teclado útiles.
+Una extensión de Visual Studio Code diseñada para tomar notas de manera
+eficiente: colores automáticos para etiquetas y títulos, autocompletado,
+herramientas de tareas (estadísticas, navegación, fechas límite, tareas
+recurrentes), formato del documento, exportación a Markdown y atajos de
+teclado — todo configurable.
+
+## ✨ Funciones destacadas
+
+- 🎨 **Colores automáticos** para etiquetas (`#todo`, `#doing`…), títulos y formatos
+- 💡 **Autocompletado** de etiquetas y constructos al escribir
+- 📊 **Herramientas de tareas**: estadísticas, navegación, filtro, fechas límite y tareas recurrentes
+- 📤 **Exportación a Markdown** con casillas de verificación, citas y títulos
+- 🧹 **Formato del documento** compatible con «Format On Save»
+- 🏷️ **Etiquetas personalizadas** con tus propios colores
+- ⚙️ **Configuración al instante** (formato de fecha, colores, decoraciones…), sin recargar
 
 ## 🎨 Características
 
 ### Colores Automáticos para Palabras Clave
 
-Tu extensión resalta automáticamente las siguientes palabras clave con colores personalizados:
+La extensión resalta automáticamente las siguientes palabras clave con colores personalizados:
 
 #### Gestión de Tareas
 
@@ -169,10 +183,13 @@ guardada). Conversión aplicada:
 
 ## 🚀 Uso
 
-1. Crea un archivo con extensión `.easy`
-2. Escribe tus notas usando las palabras clave mencionadas
-3. Los colores se aplicarán automáticamente
-4. Usa los atajos de teclado para insertar símbolos y fechas rápidamente
+1. Crea un archivo con extensión `.easy` (o usa un archivo de texto plano)
+2. Escribe tus notas usando las palabras clave — los colores se aplican automáticamente
+3. Escribe `#` para ver sugerencias de etiquetas y usa los atajos para insertar símbolos y fechas
+4. Añade fechas a tus tareas (`#todo pagar 2026-09-01`) y revisa vencimientos con
+   «Easy: Mostrar fechas límite de tareas»
+5. Comparte tus notas exportándolas a Markdown con
+   «Easy: Exportar a Markdown»
 
 ## 📋 Ejemplo
 

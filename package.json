@@ -2,7 +2,7 @@
   "name": "easy",
   "displayName": "Easy Language",
   "description": "A VS Code language for visual note-taking with colored tags (#todo, #doing, #done), formatted titles (#, ##, ###), date insertion, and keyboard shortcuts — designed for fast, organized plain-text notes.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "publisher": "JorgeDuarte",
   "author": {
     "name": "Jorge Duarte"
