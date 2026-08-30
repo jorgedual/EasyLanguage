@@ -121,6 +121,8 @@ describe("config", () => {
         "easyLanguage.decorations.backgroundColor": { todo: "#FF0000" },
         "easyLanguage.decorations.foregroundColor": { done: "#FFFFFF" },
         "easyLanguage.customTags": [{ tag: "urgente", backgroundColor: "#FF00FF" }],
+        "easyLanguage.completions.enabled": false,
+        "easyLanguage.recurringTaskDays": 7,
       });
 
       const config = loadConfig();
@@ -132,6 +134,8 @@ describe("config", () => {
       expect(config.backgroundColorOverrides).toEqual({ todo: "#FF0000" });
       expect(config.foregroundColorOverrides).toEqual({ done: "#FFFFFF" });
       expect(config.customTags).toEqual([{ tag: "urgente", backgroundColor: "#FF00FF" }]);
+      expect(config.completionsEnabled).toBe(false);
+      expect(config.recurringTaskDays).toBe(7);
     });
 
     it("falls back to defaults for invalid values", () => {
@@ -149,6 +153,18 @@ describe("config", () => {
       expect(config.disabledDecorations.has("todo")).toBe(true);
       expect(config.disabledDecorations.has("42")).toBe(false);
       expect(config.backgroundColorOverrides).toEqual({ done: "#00FF00" });
+    });
+
+    it("falls back to defaults for invalid completions and recurrence settings", () => {
+      setConfiguration({
+        "easyLanguage.completions.enabled": "sí",
+        "easyLanguage.recurringTaskDays": 0,
+      });
+
+      const config = loadConfig();
+
+      expect(config.completionsEnabled).toBe(true);
+      expect(config.recurringTaskDays).toBe(1);
     });
   });
 

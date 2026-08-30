@@ -1,4 +1,5 @@
 import { insertCurrentDate, insertSquare, insertText, registerCommands } from "../src/commands";
+import { createDefaultConfig } from "../src/config";
 import * as vscode from "vscode";
 import { createMockEditor } from "./helpers";
 import { resetVscodeMock } from "./__mocks__/vscode";
@@ -94,19 +95,23 @@ describe("commands", () => {
   });
 
   describe("registerCommands", () => {
-    it("registers all three commands", () => {
+    it("registers all four commands", () => {
       const context = { subscriptions: [] as vscode.Disposable[] } as unknown as vscode.ExtensionContext;
 
-      registerCommands(context);
+      registerCommands(context, createDefaultConfig);
 
-      expect(vscode.commands.registerCommand).toHaveBeenCalledTimes(3);
+      expect(vscode.commands.registerCommand).toHaveBeenCalledTimes(4);
       expect(vscode.commands.registerCommand).toHaveBeenCalledWith("extension.insertText", insertText);
       expect(vscode.commands.registerCommand).toHaveBeenCalledWith("extension.insertSquare", insertSquare);
       expect(vscode.commands.registerCommand).toHaveBeenCalledWith(
         "extension.insertCurrentDate",
         insertCurrentDate
       );
-      expect(context.subscriptions).toHaveLength(3);
+      expect(vscode.commands.registerCommand).toHaveBeenCalledWith(
+        "easyLanguage.exportToMarkdown",
+        expect.any(Function)
+      );
+      expect(context.subscriptions).toHaveLength(4);
     });
   });
 });

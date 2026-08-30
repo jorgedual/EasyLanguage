@@ -3,6 +3,8 @@ import {
   nextTask,
   previousTask,
   registerTaskCommands,
+  showDeadlines,
+  repeatTask,
   showTaskStats,
 } from "../src/commands/taskCommands";
 import { createDefaultConfig } from "../src/config";
@@ -205,15 +207,125 @@ describe("task commands", () => {
   });
 
   describe("registerTaskCommands", () => {
-    it("registers the four task commands", () => {
+    it("registers all six task commands", () => {
       const context = {
         subscriptions: [] as vscode.Disposable[],
       } as unknown as vscode.ExtensionContext;
 
       registerTaskCommands(context, makeConfig());
 
-      expect(vscode.commands.registerCommand).toHaveBeenCalledTimes(4);
-      expect(context.subscriptions).toHaveLength(4);
+      expect(vscode.commands.registerCommand).toHaveBeenCalledTimes(6);
+      expect(context.subscriptions).toHaveLength(6);
+    });
+  });
+});
+
+describe("phase 5 task commands", () => {
+  beforeEach(() => {
+    resetVscodeMock();
+    jest.spyOn(console, "log").mockImplementation(() => undefined);
+    jest.spyOn(console, "error").mockImplementation(() => undefined);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  describe("showDeadlines", () => {
+    const DATED_DOCUMENT = [
+      "#todo vencida 2026-08-30",
+      "#doing hoy 2026-09-01",
+      "#done futura 2026-10-01",
+    ];
+
+    it("opens a QuickPick sorted by date with deadline descriptions", async () => {
+      jest.useFakeTimers({ now: new Date(2026, 8, 1) });
+      const { editor } = createMockEditor(DATED_DOCUMENT);
+      vscode.window.activeTextEditor = editor;
+
+      showDeadlines(makeConfig());
+
+      expect(vscode.window.showQuickPick).toHaveBeenCalledTimes(1);
+      const [items, options] = (vscode.window.showQuickPick as jest.Mock).mock.calls[0];
+
+      expect(items).toHaveLength(3);
+      expect(items[0].description).toContain("Vencida hace 2 día(s)");
+      expect(items[1].description).toContain("Vence hoy");
+      expect(items[2].description).toContain("En 30 días");
+      expect(options.placeHolder).toContain("1 vencida(s), 1 hoy");
+      jest.useRealTimers();
+    });
+
+    it("jumps to the selected deadline line", async () => {
+      jest.useFakeTimers({ now: new Date(2026, 8, 1) });
+      const { editor, getSelection } = createMockEditor(DATED_DOCUMENT, {
+        cursor: { line: 0, character: 0 },
+      });
+      vscode.window.activeTextEditor = editor;
+      (vscode.window.showQuickPick as jest.Mock).mockImplementation(() =>
+        Promise.resolve({ lineNumber: 2 })
+      );
+
+      showDeadlines(makeConfig());
+      await Promise.resolve();
+
+      expect(getSelection()).toEqual({ line: 2, character: 0 });
+      jest.useRealTimers();
+    });
+
+    it("notifies when no task has a date", () => {
+      const { editor } = createMockEditor(["#todo sin fecha"]);
+      vscode.window.activeTextEditor = editor;
+
+      showDeadlines(makeConfig());
+
+      expect(vscode.window.showInformationMessage).toHaveBeenCalledWith(
+        "Easy: Ninguna tarea tiene fecha límite (añade una fecha como 2026-09-01)"
+      );
+      expect(vscode.window.showQuickPick).not.toHaveBeenCalled();
+    });
+
+    it("shows an error when there is no active editor", () => {
+      vscode.window.activeTextEditor = undefined;
+
+      showDeadlines(makeConfig());
+
+      expect(vscode.window.showErrorMessage).toHaveBeenCalledWith("No hay editor activo");
+    });
+  });
+
+  describe("repeatTask", () => {
+    it("duplicates the current line below with the date advanced", () => {
+      const { editor, insertCalls } = createMockEditor(
+        ["#todo semanal 2026-09-01"],
+        { cursor: { line: 0, character: 5 } }
+      );
+      vscode.window.activeTextEditor = editor;
+
+      repeatTask(makeConfig({ recurringTaskDays: 7 }));
+
+      expect(insertCalls).toEqual([
+        { position: { line: 0, character: 24 }, text: "\n#todo semanal 2026-09-08" },
+      ]);
+    });
+
+    it("uses one day by default and keeps lines without dates intact", () => {
+      const { editor, insertCalls } = createMockEditor(["#todo diaria"], {
+        cursor: { line: 0, character: 0 },
+      });
+      vscode.window.activeTextEditor = editor;
+
+      repeatTask(makeConfig());
+
+      expect(insertCalls).toEqual([{ position: { line: 0, character: 12 }, text: "\n#todo diaria" }]);
+    });
+
+    it("shows an error when there is no active editor", () => {
+      vscode.window.activeTextEditor = undefined;
+
+      repeatTask(makeConfig());
+
+      expect(vscode.window.showErrorMessage).toHaveBeenCalledWith("No hay editor activo");
     });
   });
 });

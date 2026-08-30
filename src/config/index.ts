@@ -8,6 +8,7 @@ const DATE_FORMATS: readonly DateFormat[] = ["YYYY-MM-DD", "DD/MM/YYYY", "MM/DD/
 
 export const DEFAULT_DECORATION_UPDATE_DELAY = 300;
 export const DEFAULT_DATE_FORMAT: DateFormat = "YYYY-MM-DD";
+export const DEFAULT_RECURRING_TASK_DAYS = 1;
 
 /** Returns a config object with documented defaults (used for tests and fallbacks). */
 export function createDefaultConfig(): EasyLanguageConfig {
@@ -18,6 +19,8 @@ export function createDefaultConfig(): EasyLanguageConfig {
     backgroundColorOverrides: {},
     foregroundColorOverrides: {},
     customTags: [],
+    completionsEnabled: true,
+    recurringTaskDays: DEFAULT_RECURRING_TASK_DAYS,
   };
 }
 
@@ -96,6 +99,18 @@ function parseDateFormat(raw: unknown): DateFormat {
   return DATE_FORMATS.includes(raw as DateFormat) ? (raw as DateFormat) : DEFAULT_DATE_FORMAT;
 }
 
+function parseRecurringTaskDays(raw: unknown): number {
+  if (typeof raw !== "number" || !Number.isFinite(raw) || raw < 1) {
+    return DEFAULT_RECURRING_TASK_DAYS;
+  }
+
+  return raw;
+}
+
+function parseBoolean(raw: unknown, fallback: boolean): boolean {
+  return typeof raw === "boolean" ? raw : fallback;
+}
+
 function parseStringSet(raw: unknown): Set<string> {
   if (!Array.isArray(raw)) {
     return new Set<string>();
@@ -138,6 +153,8 @@ export function loadConfig(): EasyLanguageConfig {
       configuration.get("decorations.foregroundColor")
     ),
     customTags: parseCustomTags(configuration.get("customTags")),
+    completionsEnabled: parseBoolean(configuration.get("completions.enabled"), true),
+    recurringTaskDays: parseRecurringTaskDays(configuration.get("recurringTaskDays")),
   };
 }
 

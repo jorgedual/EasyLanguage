@@ -47,6 +47,29 @@ Tu extensión resalta automáticamente las siguientes palabras clave con colores
 - **Ctrl+Alt+I** - Inserta un símbolo de cuadro "□" al inicio de la línea
 - **Ctrl+Alt+F** - Inserta la fecha actual (formato configurable, ver ⚙️ Configuración)
 
+### 💡 Autocompletado
+
+Al escribir en archivos Easy se sugiere automáticamente:
+
+- **Etiquetas** al escribir `#` (o después de `#`): todas las integradas
+  (`#todo`, `#doing`, `#done`, `#alta`, `#media`, `#task`, `#validar`, `#check`)
+  y tus etiquetas personalizadas, cada una con su descripción
+- **Constructos** al inicio de una línea: `Tema:`, `fecha:` y `>>`
+
+Puedes desactivarlo con `easyLanguage.completions.enabled: false`.
+
+### 🧹 Formato del documento
+
+La extensión registra un formateador de documentos (Format Document) con
+reglas conservadoras: recorta espacios al final de cada línea, colapsa
+repeticiones de líneas en blanco y garantiza un único salto final.
+
+Para formatear al guardar, activa en tu configuración:
+
+```json
+"[easy]": { "editor.formatOnSave": true }
+```
+
 ### 📝 Snippets
 
 - `/co` - Inserta una línea decorativa con asteriscos
@@ -72,6 +95,8 @@ Todas las opciones están en la sección `easyLanguage` de la configuración de 
 | `easyLanguage.decorations.backgroundColor` | `{}`           | Sobrescribe colores de fondo, p. ej. `{ "todo": "#FF0000" }`                                  |
 | `easyLanguage.decorations.foregroundColor` | `{}`           | Sobrescribe colores de texto                                                                  |
 | `easyLanguage.customTags`                  | `[]`           | Etiquetas personalizadas con su propio color                                                  |
+| `easyLanguage.completions.enabled`         | `true`         | Activa el autocompletado de etiquetas y constructos                                           |
+| `easyLanguage.recurringTaskDays`           | `1`            | Días que avanza la fecha al repetir una tarea (7 = semanal)                                   |
 
 Los cambios de configuración se aplican al instante, sin recargar.
 
@@ -101,11 +126,13 @@ Puedes crear tus propias etiquetas con color, y se resaltarán igual que las int
 
 ## 📊 Herramientas de tareas
 
-Cuatro comandos disponibles en la paleta de comandos (busca «Easy:»):
+Comandos disponibles en la paleta de comandos (busca «Easy:»):
 
 - **Easy: Mostrar estadísticas de tareas** — cuenta las tareas del documento por etiqueta
 - **Easy: Ir a la tarea siguiente** / **Easy: Ir a la tarea anterior** — salta entre líneas con tareas (con vuelta al inicio/fin)
 - **Easy: Filtrar tareas (ir a)** — lista todas las tareas en un QuickPick y salta a la seleccionada
+- **Easy: Mostrar fechas límite de tareas** — lista las tareas que tienen una fecha, ordenadas por vencimiento (vencidas, hoy, próximas) y salta a la elegida. Reconoce los formatos de `easyLanguage.dateFormat` (p. ej. `2026-09-01` o `01/09/2026`)
+- **Easy: Repetir tarea (duplicar con fecha avanzada)** — duplica la línea actual debajo, avanzando sus fechas `recurringTaskDays` días (1 = tarea diaria, 7 = semanal)
 
 Atajos sugeridos (configúralos en «Métodos abreviados de teclado»):
 
@@ -113,9 +140,32 @@ Atajos sugeridos (configúralos en «Métodos abreviados de teclado»):
 [
   { "key": "alt+n", "command": "easyLanguage.nextTask", "when": "editorTextFocus" },
   { "key": "alt+p", "command": "easyLanguage.prevTask", "when": "editorTextFocus" },
-  { "key": "alt+t", "command": "easyLanguage.showTaskStats", "when": "editorTextFocus" }
+  { "key": "alt+t", "command": "easyLanguage.showTaskStats", "when": "editorTextFocus" },
+  { "key": "alt+l", "command": "easyLanguage.showDeadlines", "when": "editorTextFocus" },
+  { "key": "alt+r", "command": "easyLanguage.repeatTask", "when": "editorTextFocus" }
 ]
 ```
+
+## 📤 Exportar a Markdown
+
+El comando **Easy: Exportar a Markdown** convierte la nota activa y guarda un
+`.md` junto al archivo original (o abre un documento nuevo si la nota no está
+guardada). Conversión aplicada:
+
+| Easy                        | Markdown                 |
+| --------------------------- | ------------------------ |
+| `Tema: X`                   | `# X`                    |
+| `#Título`                   | `## Título`              |
+| `##Subtítulo`               | `### Subtítulo`          |
+| `###Subtítulo`              | `#### Subtítulo`         |
+| `fecha: X`                  | `*fecha: X*`             |
+| `>> texto`                  | `> texto` (cita)         |
+| `🗸 tarea`                   | `- [x] tarea`            |
+| `□ tarea`                   | `- [ ] tarea`            |
+| Línea de asteriscos         | `---`                    |
+| `/// nota` y `/+nota+/`     | `<!-- nota -->`          |
+| `/@usuario`                 | `@usuario`               |
+| Etiquetas (`#todo`, custom) | `**#todo**` (en negrita) |
 
 ## 🚀 Uso
 

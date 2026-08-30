@@ -7,6 +7,26 @@ adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Autocompletado de etiquetas integradas y personalizadas (al escribir `#`) y de
+  constructos al inicio de línea (`Tema:`, `fecha:`, `>>`), desactivable con
+  `easyLanguage.completions.enabled`.
+- Formateador de documentos (compatible con «Format On Save»): recorta espacios
+  finales, colapsa líneas en blanco repetidas y normaliza el salto final.
+- Comando «Easy: Mostrar fechas límite de tareas»: lista las tareas con fecha
+  ordenadas por vencimiento (vencidas / hoy / próximas) y salta a la elegida.
+- Comando «Easy: Repetir tarea»: duplica la línea actual avanzando sus fechas
+  `easyLanguage.recurringTaskDays` días (tareas recurrentes).
+- Comando «Easy: Exportar a Markdown»: convierte la nota a Markdown (títulos,
+  casillas, citas, etiquetas…) y guarda `<nombre>.md` junto al original.
+- Nueva configuración `easyLanguage.recurringTaskDays` (días de recurrencia).
+
+### Changed
+
+- El comando de inserción de fecha reutiliza el formateo centralizado de fechas
+  (mismo comportamiento).
+
 ## [0.1.0]
 
 ### Added

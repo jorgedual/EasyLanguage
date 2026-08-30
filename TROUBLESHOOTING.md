@@ -73,6 +73,43 @@ tienen prioridad sobre el tema. Para cambiar esos colores usa
 - Errores de activación se muestran como notificación y quedan en el registro:
   pestaña «Extension Host» del panel de salida.
 
+## El autocompletado no muestra etiquetas
+
+- El autocompletado de etiquetas se activa al escribir `#` (o justo después).
+  Las sugerencias de constructos (`Tema:`, `fecha:`, `>>`) solo aparecen en una
+  línea vacía.
+- Verifica que `easyLanguage.completions.enabled` no esté en `false`.
+- Si tampoco aparecen otros sugeridos (snippets), comprueba que el lenguaje del
+  archivo sea «Easy».
+
+## «Format Document» cambia más de lo esperado
+
+El formateador aplica reglas conservadoras: recorta espacios al final de línea,
+reduce secuencias de líneas en blanco a una sola y asegura un único salto
+final. No reordena ni reescribe contenido. Si quieres formatear
+automáticamente al guardar, activa `"[easy]": { "editor.formatOnSave": true }`.
+
+## La fecha límite de mi tarea no aparece
+
+El comando «Easy: Mostrar fechas límite» reconoce fechas en los formatos de
+`easyLanguage.dateFormat` (`2026-09-01`, `01/09/2026`, …). Fechas en otros
+formatos (p. ej. «1 de septiembre») no se detectan. Las fechas `DD/MM` vs
+`MM/DD` se interpretan según tu configuración.
+
+## «Repetir tarea» no avanza la fecha
+
+El comando duplica la línea actual y avanza **todas** las fechas que encuentre
+en ella `easyLanguage.recurringTaskDays` días (1 por defecto). Si la línea no
+tiene fecha, simplemente la duplica. Para tareas semanales configura el valor
+en `7`.
+
+## La exportación a Markdown no guarda el archivo
+
+Si la nota no está guardada en disco (documento sin título), la exportación
+abre un documento Markdown nuevo con el contenido convertido: guárdalo con
+Ctrl+Shift+S. Archivos guardados como `.easy` se exportan automáticamente a
+`<nombre>.md` en la misma carpeta.
+
 ## Ver el log de la extensión
 
 En la ventana de desarrollo: panel «Output» (salida) → canal «EasyLanguage»,

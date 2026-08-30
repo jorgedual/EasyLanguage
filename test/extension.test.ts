@@ -30,14 +30,16 @@ describe("extension", () => {
   });
 
   describe("activate", () => {
-    it("initializes decorations and registers commands", () => {
+    it("initializes decorations and registers commands and providers", () => {
       const context = createContext();
 
       activate(context);
 
       expect(vscode.window.createTextEditorDecorationType).toHaveBeenCalledTimes(20);
-      expect(vscode.commands.registerCommand).toHaveBeenCalledTimes(7);
-      expect(context.subscriptions).toHaveLength(10);
+      expect(vscode.commands.registerCommand).toHaveBeenCalledTimes(10);
+      expect(vscode.languages.registerCompletionItemProvider).toHaveBeenCalledTimes(2);
+      expect(vscode.languages.registerDocumentFormattingEditProvider).toHaveBeenCalledTimes(2);
+      expect(context.subscriptions).toHaveLength(17);
     });
 
     it("uses custom tags from settings", () => {

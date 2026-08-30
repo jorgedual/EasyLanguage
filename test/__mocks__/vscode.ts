@@ -29,6 +29,32 @@ export class Selection {
   constructor(readonly anchor: Position, readonly active: Position) {}
 }
 
+export class CompletionItem {
+  detail?: string;
+  documentation?: string;
+  insertText?: string;
+
+  constructor(readonly label: string, readonly kind?: unknown) {}
+}
+
+export const CompletionItemKind = {
+  Keyword: 13,
+  Snippet: 15,
+  Text: 0,
+};
+
+export class TextEdit {
+  constructor(readonly range: Range, readonly newText: string) {}
+
+  static replace(range: Range, newText: string): TextEdit {
+    return new TextEdit(range, newText);
+  }
+}
+
+export const Uri = {
+  file: jest.fn((path: string): { fsPath: string } => ({ fsPath: path })),
+};
+
 export interface DecorationOptions {
   range: Range;
   hoverMessage?: string;
@@ -87,6 +113,7 @@ export const window = {
   showWarningMessage: jest.fn(),
   showInformationMessage: jest.fn(),
   showQuickPick: jest.fn((): Thenable<unknown> => Promise.resolve(undefined)),
+  showTextDocument: jest.fn((): Thenable<unknown> => Promise.resolve({})),
 
   onDidChangeActiveTextEditor: jest.fn(
     (handler: ChangeHandler<EditorLike | undefined>): Disposable => {
@@ -105,6 +132,8 @@ export const workspace = {
   getConfiguration: jest.fn((section: string) => ({
     get: jest.fn((key: string) => configurationStore[`${section}.${key}`]),
   })),
+
+  openTextDocument: jest.fn((): Thenable<unknown> => Promise.resolve({})),
 
   onDidChangeTextDocument: jest.fn(
     (handler: ChangeHandler<DocumentChangeEventLike>): Disposable => {
@@ -135,6 +164,20 @@ export const commands = {
   registerCommand: jest.fn((_command: string, _callback: () => void): Disposable => {
     return new Disposable();
   }),
+};
+
+export const languages = {
+  registerCompletionItemProvider: jest.fn(
+    (_selector: string, _provider: unknown, ..._triggers: string[]): Disposable => {
+      return new Disposable();
+    }
+  ),
+
+  registerDocumentFormattingEditProvider: jest.fn(
+    (_selector: string, _provider: unknown): Disposable => {
+      return new Disposable();
+    }
+  ),
 };
 
 export const TextEditorRevealType = {
@@ -187,7 +230,12 @@ export function resetVscodeMock(): void {
   workspace.getConfiguration.mockClear();
   workspace.onDidChangeTextDocument.mockClear();
   workspace.onDidChangeConfiguration.mockClear();
+  workspace.openTextDocument.mockClear().mockImplementation(() => Promise.resolve({}));
   commands.registerCommand.mockClear();
+  languages.registerCompletionItemProvider.mockClear();
+  languages.registerDocumentFormattingEditProvider.mockClear();
+  window.showTextDocument.mockClear().mockImplementation(() => Promise.resolve({}));
+  Uri.file.mockClear().mockImplementation((path: string) => ({ fsPath: path }));
   createdDecorationTypes.length = 0;
   activeEditorHandlers.length = 0;
   documentChangeHandlers.length = 0;

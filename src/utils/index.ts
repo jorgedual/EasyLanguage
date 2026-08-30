@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import type { DateFormat } from "../types";
+import { formatDateValue } from "../dates";
 
 const SUPPORTED_LANGUAGES: readonly string[] = ["easy", "plaintext"];
 
@@ -23,12 +24,7 @@ export function debounce<T extends (...args: never[]) => void>(
 
 /** Formats the current local date according to the given `DateFormat` token string. */
 export function getCurrentDate(format: DateFormat = "YYYY-MM-DD"): string {
-  const now = new Date();
-  const year = now.getFullYear().toString();
-  const month = (now.getMonth() + 1).toString().padStart(2, "0");
-  const day = now.getDate().toString().padStart(2, "0");
-
-  return format.replace("YYYY", year).replace("MM", month).replace("DD", day);
+  return formatDateValue(new Date(), format);
 }
 
 /** Type guard that checks an active text editor and its document are available. */

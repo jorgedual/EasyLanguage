@@ -11,7 +11,11 @@ export interface MockEditorResult {
 
 export function createMockEditor(
   lines: string[],
-  options: { languageId?: string; cursor?: { line: number; character: number } } = {}
+  options: {
+    languageId?: string;
+    cursor?: { line: number; character: number };
+    fsPath?: string;
+  } = {}
 ): MockEditorResult {
   const languageId = options.languageId ?? "easy";
   const cursor = options.cursor ?? { line: 0, character: 0 };
@@ -21,7 +25,9 @@ export function createMockEditor(
 
   const document = {
     languageId,
+    ...(options.fsPath !== undefined ? { uri: { fsPath: options.fsPath } } : {}),
     getText: () => text,
+    lineCount: lines.length,
     lineAt: (line: number) => ({
       text: lines[line] ?? "",
       lineNumber: line,

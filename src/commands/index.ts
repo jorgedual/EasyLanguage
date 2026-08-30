@@ -1,6 +1,8 @@
 import * as vscode from "vscode";
 import { loadConfig } from "../config";
 import { getCurrentDate, logInfo, safeExecute, validateEditor } from "../utils";
+import { registerExportCommands } from "./exportCommands";
+import type { EasyLanguageConfig } from "../types";
 
 function insertAtLineStart(editor: vscode.TextEditor, text: string): void {
   const currentPosition = editor.selection.active;
@@ -68,13 +70,18 @@ export function insertCurrentDate(): void {
   }, "insert date operation");
 }
 
-/** Registers all text/date insertion commands on the extension context. */
-export function registerCommands(context: vscode.ExtensionContext): void {
+/** Registers all text/date insertion commands and the Markdown export command. */
+export function registerCommands(
+  context: vscode.ExtensionContext,
+  getConfig: () => EasyLanguageConfig
+): void {
   context.subscriptions.push(
     vscode.commands.registerCommand("extension.insertText", insertText),
     vscode.commands.registerCommand("extension.insertSquare", insertSquare),
     vscode.commands.registerCommand("extension.insertCurrentDate", insertCurrentDate)
   );
+
+  registerExportCommands(context, getConfig);
 
   logInfo("Commands registered successfully");
 }

@@ -116,6 +116,18 @@
       {
         "command": "easyLanguage.filterTasks",
         "title": "Easy: Filtrar tareas (ir a)"
+      },
+      {
+        "command": "easyLanguage.showDeadlines",
+        "title": "Easy: Mostrar fechas límite de tareas"
+      },
+      {
+        "command": "easyLanguage.repeatTask",
+        "title": "Easy: Repetir tarea (duplicar con fecha avanzada)"
+      },
+      {
+        "command": "easyLanguage.exportToMarkdown",
+        "title": "Easy: Exportar a Markdown"
       }
     ],
     "configuration": {
@@ -137,6 +149,17 @@
           ],
           "default": "YYYY-MM-DD",
           "description": "Formato de fecha que inserta el comando «Insert Current Date»."
+        },
+        "easyLanguage.completions.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Activa el autocompletado de etiquetas (#todo, #urgente…) y constructos (Tema:, fecha:, >>) en archivos Easy."
+        },
+        "easyLanguage.recurringTaskDays": {
+          "type": "number",
+          "default": 1,
+          "minimum": 1,
+          "description": "Días que avanza la fecha al duplicar una tarea con «Easy: Repetir tarea» (1 = diaria, 7 = semanal)."
         },
         "easyLanguage.decorations.disabled": {
           "type": "array",

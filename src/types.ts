@@ -46,12 +46,22 @@ export interface EasyLanguageConfig {
   readonly backgroundColorOverrides: Readonly<Record<string, string>>;
   readonly foregroundColorOverrides: Readonly<Record<string, string>>;
   readonly customTags: readonly CustomTagDefinition[];
+  readonly completionsEnabled: boolean;
+  readonly recurringTaskDays: number;
 }
 
 export interface TaskLineInfo {
   readonly lineNumber: number;
   readonly text: string;
   readonly tags: readonly string[];
+}
+
+export type DeadlineStatus = "overdue" | "today" | "upcoming" | "later";
+
+export interface TaskDeadlineInfo extends TaskLineInfo {
+  readonly dueDate: Date;
+  readonly status: DeadlineStatus;
+  readonly daysUntil: number;
 }
 
 export type DecorationStyleMap = Map<string, vscode.DecorationRenderOptions>;

@@ -1,7 +1,10 @@
 import {
   STAT_TAG_NAMES,
+  classifyDeadline,
+  collectTaskDeadlines,
   computeTaskStats,
   countTotalTasks,
+  extractDueDate,
   findNextTaskLine,
   findPrevTaskLine,
   findTaskLines,
@@ -102,6 +105,73 @@ describe("tasks", () => {
 
       expect(findPrevTaskLine(1, taskLines)).toBeUndefined();
       expect(findPrevTaskLine(0, taskLines)).toBeUndefined();
+    });
+  });
+});
+
+describe("task deadlines", () => {
+  const TODAY = new Date(2026, 8, 1);
+
+  describe("extractDueDate", () => {
+    it("returns the first date found in the line", () => {
+      expect(extractDueDate("#todo pagar 2026-09-15", "YYYY-MM-DD")).toEqual(new Date(2026, 8, 15));
+      expect(extractDueDate("#todo pagar 15/09/2026", "DD/MM/YYYY")).toEqual(new Date(2026, 8, 15));
+    });
+
+    it("returns null when the line has no date", () => {
+      expect(extractDueDate("#todo sin fecha", "YYYY-MM-DD")).toBeNull();
+    });
+  });
+
+  describe("classifyDeadline", () => {
+    it("classifies overdue, today, upcoming and later", () => {
+      expect(classifyDeadline(new Date(2026, 7, 30), TODAY)).toEqual({
+        status: "overdue",
+        daysUntil: -2,
+      });
+      expect(classifyDeadline(new Date(2026, 8, 1), TODAY)).toEqual({
+        status: "today",
+        daysUntil: 0,
+      });
+      expect(classifyDeadline(new Date(2026, 8, 5), TODAY)).toEqual({
+        status: "upcoming",
+        daysUntil: 4,
+      });
+      expect(classifyDeadline(new Date(2026, 11, 1), TODAY)).toEqual({
+        status: "later",
+        daysUntil: 91,
+      });
+    });
+  });
+
+  describe("collectTaskDeadlines", () => {
+    it("collects only task lines that have dates, sorted by date", () => {
+      const lines = [
+        "#todo primera 2026-09-10",
+        "texto sin tareas 2026-01-01",
+        "#doing segunda 2026-09-03",
+        "#done tercera sin fecha",
+      ];
+
+      const deadlines = collectTaskDeadlines(lines, STAT_TAG_NAMES, "YYYY-MM-DD", TODAY);
+
+      expect(deadlines.map((deadline) => deadline.text)).toEqual([
+        "#doing segunda 2026-09-03",
+        "#todo primera 2026-09-10",
+      ]);
+      expect(deadlines[0].status).toBe("upcoming");
+      expect(deadlines[1].status).toBe("later");
+    });
+
+    it("reports overdue tasks with negative days", () => {
+      const deadlines = collectTaskDeadlines(
+        ["#todo vencida 2026-08-30"],
+        STAT_TAG_NAMES,
+        "YYYY-MM-DD",
+        TODAY
+      );
+
+      expect(deadlines[0]).toMatchObject({ status: "overdue", daysUntil: -2 });
     });
   });
 });
