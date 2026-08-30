@@ -86,6 +86,11 @@
         "command": "extension.insertCurrentDate",
         "key": "ctrl+alt+f",
         "when": "editorTextFocus"
+      },
+      {
+        "command": "easyLanguage.cycleTaskStatus",
+        "key": "alt+s",
+        "when": "editorTextFocus"
       }
     ],
     "commands": [
@@ -124,6 +129,10 @@
       {
         "command": "easyLanguage.repeatTask",
         "title": "Easy: Repetir tarea (duplicar con fecha avanzada)"
+      },
+      {
+        "command": "easyLanguage.cycleTaskStatus",
+        "title": "Easy: Cambiar estado de tarea"
       },
       {
         "command": "easyLanguage.exportToMarkdown",

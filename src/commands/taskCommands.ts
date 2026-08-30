@@ -8,6 +8,7 @@ import {
   computeStatePriorityMatrix,
   computeTaskStats,
   countTotalTasks,
+  cycleTaskStatus,
   findNextTaskLine,
   findPrevTaskLine,
   findTaskLines,
@@ -231,10 +232,38 @@ function repeatTask(getConfig: () => EasyLanguageConfig): void {
   }, "repeat task operation");
 }
 
+/** Command handler: advances the cursor line's task state one step (Alt+S). */
+function cycleTask(_getConfig: () => EasyLanguageConfig): void {
+  safeExecute(() => {
+    const editor = vscode.window.activeTextEditor;
+
+    if (!validateEditor(editor)) {
+      void vscode.window.showErrorMessage("No hay editor activo");
+      return;
+    }
+
+    const currentLine = editor.selection.active.line;
+    const lineText = editor.document.lineAt(currentLine).text;
+    const edits = cycleTaskStatus(lineText);
+
+    void editor.edit((editBuilder) => {
+      for (const edit of edits) {
+        editBuilder.replace(
+          new vscode.Range(
+            new vscode.Position(currentLine, edit.start),
+            new vscode.Position(currentLine, edit.end)
+          ),
+          edit.text
+        );
+      }
+    });
+  }, "cycle task status operation");
+}
+
 /**
  * Registers the task tool commands (stats, next/previous navigation, QuickPick
- * filter, deadlines, recurrence) on the extension context, reading fresh
- * config via `getConfig`.
+ * filter, deadlines, recurrence, status cycle) on the extension context,
+ * reading fresh config via `getConfig`.
  */
 export function registerTaskCommands(
   context: vscode.ExtensionContext,
@@ -246,8 +275,17 @@ export function registerTaskCommands(
     vscode.commands.registerCommand("easyLanguage.prevTask", () => previousTask(getConfig)),
     vscode.commands.registerCommand("easyLanguage.filterTasks", () => filterTasks(getConfig)),
     vscode.commands.registerCommand("easyLanguage.showDeadlines", () => showDeadlines(getConfig)),
-    vscode.commands.registerCommand("easyLanguage.repeatTask", () => repeatTask(getConfig))
+    vscode.commands.registerCommand("easyLanguage.repeatTask", () => repeatTask(getConfig)),
+    vscode.commands.registerCommand("easyLanguage.cycleTaskStatus", () => cycleTask(getConfig))
   );
 }
 
-export { showTaskStats, nextTask, previousTask, filterTasks, showDeadlines, repeatTask };
+export {
+  showTaskStats,
+  nextTask,
+  previousTask,
+  filterTasks,
+  showDeadlines,
+  repeatTask,
+  cycleTask,
+};

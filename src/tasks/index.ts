@@ -19,6 +19,81 @@ export const STAT_TAG_NAMES: readonly string[] = [
 /** Built-in state tags (what a task is: its workflow position). */
 export const STATE_TAG_NAMES: readonly string[] = ["todo", "doing", "done", "blocked", "waiting"];
 
+/** States traversed by the cycle command, in order. */
+export const CYCLE_STATE_ORDER: readonly string[] = ["todo", "doing", "done"];
+
+/** A character-range replacement within a single line (offsets are 0-based). */
+export interface LineTextEdit {
+  readonly start: number;
+  readonly end: number;
+  readonly text: string;
+}
+
+const STATE_TAG_PATTERN = /#(todo|doing|done|blocked|waiting)\b/;
+
+function leadingSymbolEnd(line: string): number {
+  const trimmed = line.trimStart();
+  const leadingWhitespace = line.length - trimmed.length;
+  // 🗸 is astral (2 UTF-16 units), □ is not — measure with the symbol itself
+  const symbol = trimmed.startsWith("🗸") ? "🗸" : trimmed.startsWith("□") ? "□" : undefined;
+
+  if (symbol) {
+    let end = leadingWhitespace + symbol.length;
+    if (line[end] === " ") {
+      end += 1;
+    }
+    return end;
+  }
+
+  return leadingWhitespace;
+}
+
+/**
+ * Computes the edits that advance the line's task state one step:
+ * `(sin estado) → #todo → #doing → #done → (quita el tag)`. `#blocked` and
+ * `#waiting` are reactivated to `#todo`. When reaching `#done`, a leading `□`
+ * is synced to `🗸`; when leaving `#done`, the symbol is left untouched.
+ * Returns character-range replacements for the original line.
+ */
+export function cycleTaskStatus(line: string): LineTextEdit[] {
+  const match = line.match(STATE_TAG_PATTERN);
+
+  if (!match || match.index === undefined) {
+    const insertAt = leadingSymbolEnd(line);
+    return [{ start: insertAt, end: insertAt, text: "#todo " }];
+  }
+
+  const current = match[1];
+  const tagStart = match.index;
+  const tagEnd = match.index + match[0].length;
+
+  if (current === "done") {
+    let start = tagStart;
+    let end = tagEnd;
+    if (line[end] === " ") {
+      end += 1;
+    } else if (start > 0 && line[start - 1] === " ") {
+      start -= 1;
+    }
+    return [{ start, end, text: "" }];
+  }
+
+  const next =
+    current === "todo" ? "doing" : current === "doing" ? "done" : "todo";
+
+  const edits: LineTextEdit[] = [{ start: tagStart, end: tagEnd, text: `#${next}` }];
+
+  if (next === "done") {
+    const trimmed = line.trimStart();
+    if (trimmed.startsWith("□")) {
+      const symbolStart = line.length - trimmed.length;
+      edits.push({ start: symbolStart, end: symbolStart + 1, text: "🗸" });
+    }
+  }
+
+  return edits;
+}
+
 /** Built-in priority tags (how urgent a task is). */
 export const PRIORITY_TAG_NAMES: readonly string[] = ["alta", "media", "baja"];
 

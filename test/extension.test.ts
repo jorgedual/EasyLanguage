@@ -36,10 +36,10 @@ describe("extension", () => {
       activate(context);
 
       expect(vscode.window.createTextEditorDecorationType).toHaveBeenCalledTimes(23);
-      expect(vscode.commands.registerCommand).toHaveBeenCalledTimes(10);
+      expect(vscode.commands.registerCommand).toHaveBeenCalledTimes(11);
       expect(vscode.languages.registerCompletionItemProvider).toHaveBeenCalledTimes(2);
       expect(vscode.languages.registerDocumentFormattingEditProvider).toHaveBeenCalledTimes(2);
-      expect(context.subscriptions).toHaveLength(17);
+      expect(context.subscriptions).toHaveLength(18);
     });
 
     it("uses custom tags from settings", () => {

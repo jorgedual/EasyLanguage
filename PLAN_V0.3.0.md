@@ -77,15 +77,15 @@ el mensaje de estadísticas.
 
 ## Fase 2 — F3: Ciclar estado (`Alt+S`)
 
-- [ ] Pura `cycleTaskStatus(line)`:
+- [x] Pura `cycleTaskStatus(line)`:
       `sin estado → #todo → #doing → #done → (quita tag)`.
       Si la línea tiene `#blocked`/`#waiting`, el ciclo los reemplaza por
       `#todo` (primera pulsación los "reactiva")
-- [ ] D2: al llegar a `#done`, si la línea empieza con `□`, se reemplaza por `🗸`.
+- [x] D2: al llegar a `#done`, si la línea empieza con `□`, se reemplaza por `🗸`.
       Al salir de `#done` (quitar tag) el símbolo queda como está
-- [ ] Comando `easyLanguage.cycleTaskStatus` («Easy: Cambiar estado de tarea»)
-- [ ] Keybinding `Alt+S` en `package.json`
-- [ ] Solo en líneas con foco; usa `edit builder` (reemplazo del tag, no de la línea)
+- [x] Comando `easyLanguage.cycleTaskStatus` («Easy: Cambiar estado de tarea»)
+- [x] Keybinding `Alt+S` en `package.json`
+- [x] Solo en líneas con foco; usa `edit builder` (reemplazo del tag, no de la línea)
 
 **Tests:** ciclo completo, línea sin estado, `#blocked`→`#todo`, sincronización
 de check (□→🗸, 🗸 ya presente, línea sin símbolo), sin editor.

@@ -1,4 +1,5 @@
 import {
+  cycleTask,
   filterTasks,
   nextTask,
   previousTask,
@@ -207,15 +208,15 @@ describe("task commands", () => {
   });
 
   describe("registerTaskCommands", () => {
-    it("registers all six task commands", () => {
+    it("registers all seven task commands", () => {
       const context = {
         subscriptions: [] as vscode.Disposable[],
       } as unknown as vscode.ExtensionContext;
 
       registerTaskCommands(context, makeConfig());
 
-      expect(vscode.commands.registerCommand).toHaveBeenCalledTimes(6);
-      expect(context.subscriptions).toHaveLength(6);
+      expect(vscode.commands.registerCommand).toHaveBeenCalledTimes(7);
+      expect(context.subscriptions).toHaveLength(7);
     });
   });
 });
@@ -367,6 +368,68 @@ describe("stats with state x priority breakdown", () => {
 
     expect(vscode.window.showInformationMessage).toHaveBeenCalledWith(
       "Easy: 3 tareas — #blocked: 1  |  #waiting: 1  |  #baja: 1 — Cruce: blocked+baja: 1"
+    );
+  });
+});
+
+describe("cycleTaskStatus command", () => {
+  beforeEach(() => {
+    resetVscodeMock();
+    jest.spyOn(console, "log").mockImplementation(() => undefined);
+    jest.spyOn(console, "error").mockImplementation(() => undefined);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it("replaces the state tag on the cursor line", () => {
+    const { editor, replaceCalls } = createMockEditor(
+      ["#todo primera", "#doing segunda"],
+      { cursor: { line: 1, character: 0 } }
+    );
+    vscode.window.activeTextEditor = editor;
+
+    cycleTask(makeConfig());
+
+    expect(replaceCalls).toEqual([
+      { start: { line: 1, character: 0 }, end: { line: 1, character: 6 }, text: "#done" },
+    ]);
+  });
+
+  it("syncs the leading checkbox on the same line", () => {
+    const { editor, replaceCalls } = createMockEditor(["□ #doing llamar a Juan"], {
+      cursor: { line: 0, character: 5 },
+    });
+    vscode.window.activeTextEditor = editor;
+
+    cycleTask(makeConfig());
+
+    expect(replaceCalls).toEqual([
+      { start: { line: 0, character: 2 }, end: { line: 0, character: 8 }, text: "#done" },
+      { start: { line: 0, character: 0 }, end: { line: 0, character: 1 }, text: "🗸" },
+    ]);
+  });
+
+  it("shows an error when there is no active editor", () => {
+    vscode.window.activeTextEditor = undefined;
+
+    cycleTask(makeConfig());
+
+    expect(vscode.window.showErrorMessage).toHaveBeenCalledWith("No hay editor activo");
+  });
+
+  it("is registered as the seventh task command", () => {
+    const context = {
+      subscriptions: [] as vscode.Disposable[],
+    } as unknown as vscode.ExtensionContext;
+
+    registerTaskCommands(context, makeConfig());
+
+    expect(vscode.commands.registerCommand).toHaveBeenCalledTimes(7);
+    expect(vscode.commands.registerCommand).toHaveBeenCalledWith(
+      "easyLanguage.cycleTaskStatus",
+      expect.any(Function)
     );
   });
 });

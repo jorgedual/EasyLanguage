@@ -7,6 +7,7 @@ import {
   collectTaskDeadlines,
   computeTaskStats,
   countTotalTasks,
+  cycleTaskStatus,
   extractDueDate,
   findNextTaskLine,
   findPrevTaskLine,
@@ -226,5 +227,71 @@ describe("computeStatePriorityMatrix", () => {
 
   it("returns an empty matrix for documents without combined tasks", () => {
     expect(computeStatePriorityMatrix([], STATE_TAG_NAMES, PRIORITY_TAG_NAMES)).toEqual({});
+  });
+});
+
+describe("cycleTaskStatus", () => {
+  it("inserts #todo after leading whitespace on a plain line", () => {
+    expect(cycleTaskStatus("comprar pan")).toEqual([
+      { start: 0, end: 0, text: "#todo " },
+    ]);
+    expect(cycleTaskStatus("   comprar pan")).toEqual([
+      { start: 3, end: 3, text: "#todo " },
+    ]);
+  });
+
+  it("inserts #todo after a leading checkbox or check symbol", () => {
+    expect(cycleTaskStatus("□ llamar a Juan")).toEqual([
+      { start: 2, end: 2, text: "#todo " },
+    ]);
+    // 🗸 is an astral character (2 UTF-16 units)
+    expect(cycleTaskStatus("🗸 llamar a Juan")).toEqual([
+      { start: 3, end: 3, text: "#todo " },
+    ]);
+  });
+
+  it("advances todo → doing and doing → done", () => {
+    expect(cycleTaskStatus("#todo primera")).toEqual([
+      { start: 0, end: 5, text: "#doing" },
+    ]);
+    expect(cycleTaskStatus("#doing segunda")).toEqual([
+      { start: 0, end: 6, text: "#done" },
+    ]);
+  });
+
+  it("removes #done together with one adjacent space", () => {
+    expect(cycleTaskStatus("#done terminada")).toEqual([{ start: 0, end: 6, text: "" }]);
+    expect(cycleTaskStatus("tarea #done")).toEqual([{ start: 5, end: 11, text: "" }]);
+    expect(cycleTaskStatus("#done")).toEqual([{ start: 0, end: 5, text: "" }]);
+  });
+
+  it("reactivates blocked and waiting as todo", () => {
+    expect(cycleTaskStatus("#blocked revisar")).toEqual([
+      { start: 0, end: 8, text: "#todo" },
+    ]);
+    expect(cycleTaskStatus("#waiting revisar")).toEqual([
+      { start: 0, end: 8, text: "#todo" },
+    ]);
+  });
+
+  it("syncs a leading checkbox to a check when reaching done", () => {
+    expect(cycleTaskStatus("□ #doing llamar a Juan")).toEqual([
+      { start: 2, end: 8, text: "#done" },
+      { start: 0, end: 1, text: "🗸" },
+    ]);
+  });
+
+  it("does not touch an existing check symbol when reaching done", () => {
+    expect(cycleTaskStatus("🗸 #doing llamar a Juan")).toEqual([
+      { start: 3, end: 9, text: "#done" },
+    ]);
+  });
+
+  it("leaves the symbol untouched when leaving done", () => {
+    expect(cycleTaskStatus("🗸 #done terminada")).toEqual([{ start: 3, end: 9, text: "" }]);
+  });
+
+  it("does not confuse longer words that start with a state tag", () => {
+    expect(cycleTaskStatus("#todoX algo")).toEqual([{ start: 0, end: 0, text: "#todo " }]);
   });
 });

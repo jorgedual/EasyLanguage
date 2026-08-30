@@ -6,6 +6,11 @@ export interface MockEditorResult {
   setDecorations: jest.Mock;
   revealRange: jest.Mock;
   insertCalls: Array<{ position: { line: number; character: number }; text: string }>;
+  replaceCalls: Array<{
+    start: { line: number; character: number };
+    end: { line: number; character: number };
+    text: string;
+  }>;
   getSelection(): { line: number; character: number };
 }
 
@@ -22,6 +27,7 @@ export function createMockEditor(
   const text = lines.join("\n");
 
   const insertCalls: MockEditorResult["insertCalls"] = [];
+  const replaceCalls: MockEditorResult["replaceCalls"] = [];
 
   const document = {
     languageId,
@@ -41,13 +47,27 @@ export function createMockEditor(
 
   const edit = jest.fn(
     (
-      callback: (builder: { insert(position: vscode.Position, text: string): void }) => void
+      callback: (builder: {
+        insert(position: vscode.Position, text: string): void;
+        replace(location: vscode.Range | vscode.Position, text: string): void;
+      }) => void
     ): Thenable<boolean> => {
       const builder = {
         insert: (position: vscode.Position, insertedText: string): void => {
           insertCalls.push({
             position: { line: position.line, character: position.character },
             text: insertedText,
+          });
+        },
+        replace: (location: vscode.Range | vscode.Position, replacedText: string): void => {
+          const range = location as {
+            start: { line: number; character: number };
+            end: { line: number; character: number };
+          };
+          replaceCalls.push({
+            start: { line: range.start.line, character: range.start.character },
+            end: { line: range.end.line, character: range.end.character },
+            text: replacedText,
           });
         },
       };
@@ -79,5 +99,5 @@ export function createMockEditor(
     revealRange,
   } as unknown as vscode.TextEditor;
 
-  return { editor, edit, setDecorations, revealRange, insertCalls, getSelection };
+  return { editor, edit, setDecorations, revealRange, insertCalls, replaceCalls, getSelection };
 }
