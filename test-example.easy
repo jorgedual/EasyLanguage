@@ -87,8 +87,11 @@ Lista completa para verificar:
 - #todo debe ser amarillo con fondo
 - #doing debe ser azul con fondo
 - #done debe ser verde con fondo
+- #blocked debe ser rojo suave con fondo
+- #waiting debe ser morado claro con fondo
 - #alta debe ser rojo
 - #media debe ser amarillo
+- #baja debe ser verde (solo texto, sin fondo)
 - #task debe ser verde
 - #validar debe ser rojo con fondo
 - #check debe ser verde brillante con fondo
@@ -105,4 +108,15 @@ fecha: 2026-02-28
 
 Esta es una nota que se está estableciendo de manera normal
 
-Tema: 
+Tema: Tareas con estado y prioridad
+
+#todo #alta tarea urgente para hoy
+#todo #media tarea normal
+#todo #baja tarea cuando puedas
+#doing #alta en progreso con prioridad
+#blocked #media esperando a otro equipo
+#waiting #baja en espera de revisión
+#done #baja completada hace tiempo
+
+#todo tarea sin prioridad
+#alta prioridad sin estado

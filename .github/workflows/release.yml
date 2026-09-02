@@ -1,0 +1,70 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build & Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Verify tag matches package.json version
+        run: |
+          PKG_VERSION="v$(node -p "require('./package.json').version")"
+          if [ "$PKG_VERSION" != "${GITHUB_REF_NAME}" ]; then
+            echo "::error::Tag ${GITHUB_REF_NAME} does not match package.json version ${PKG_VERSION}"
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Quality gates (lint, format, types, tests)
+        run: |
+          npm run lint
+          npm run format:check
+          npm run typecheck
+          npm test
+
+      - name: Build & package VSIX
+        run: npx vsce package --no-dependencies -o easy-${GITHUB_REF_NAME}.vsix
+
+      - name: Extract changelog for this version
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          CHANGELOG="$(awk -v ver="$VERSION" '
+            $0 == "## [" ver "]" { found=1; next }
+            found && /^## \[/ { exit }
+            found { print }
+          ' CHANGELOG.md)"
+          if [ -z "$CHANGELOG" ]; then
+            CHANGELOG="Release $VERSION. See CHANGELOG.md for details."
+          fi
+          {
+            echo "RELEASE_NOTES<<EOF"
+            echo "$CHANGELOG"
+            echo "EOF"
+          } >> "$GITHUB_ENV"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            --title "Easy Language ${GITHUB_REF_NAME}" \
+            --notes "$RELEASE_NOTES" \
+            "easy-${GITHUB_REF_NAME}.vsix"

@@ -3,6 +3,7 @@
 ## 🚀 Primera Instalación
 
 ### Paso 1: Instalar la Extensión
+
 1. Abre VS Code
 2. Presiona **Ctrl+Shift+X** (Extensions)
 3. Haz clic en el menú **"..." (tres puntos)** arriba a la derecha
@@ -12,6 +13,7 @@
 7. **Recarga VS Code** cuando te lo pida
 
 ### Paso 2: Activar el Tema
+
 1. Presiona **Ctrl+K Ctrl+T**
 2. Busca **"Easy"**
 3. Selecciónalo
@@ -25,7 +27,9 @@
 Cuando hagas cambios al código:
 
 ### 1. Generar Nuevo Paquete
+
 Abre una terminal en `C:\DEV\EasyLanguage` y ejecuta:
+
 ```bash
 npx vsce package --allow-star-activation
 ```
@@ -33,6 +37,7 @@ npx vsce package --allow-star-activation
 Esto creará un nuevo `easy-0.0.2.vsix` (o incrementa la versión en `package.json`)
 
 ### 2. Reinstalar
+
 - Ve a Extensions (**Ctrl+Shift+X**)
 - Busca "Easy Language"
 - Haz clic en **Uninstall**
@@ -45,16 +50,19 @@ Esto creará un nuevo `easy-0.0.2.vsix` (o incrementa la versión en `package.js
 ## ✨ Funcionalidades de la Extensión
 
 ### 📝 Snippets (escribe y presiona Tab)
+
 - `/co` + Tab → `/***********************/`
 - `/cruz` + Tab → `/++++++++++++++++++++/`
 - `/fecha` + Tab → `fecha: 2026-02-28`
 
 ### ⌨️ Atajos de Teclado
+
 - **Ctrl+Alt+D** → Inserta `🗸 ` (check mark)
 - **Ctrl+Alt+I** → Inserta `□ ` (cuadro vacío)
 - **Ctrl+Alt+F** → Inserta fecha actual `2026-02-28`
 
 ### 🎨 Colores Automáticos (en archivos .easy)
+
 - `Tema:` → Fondo azul
 - `fecha:` → Fondo gris
 - `##` → Fondo amarillo (Subtítulo nivel 1)

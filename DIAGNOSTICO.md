@@ -25,6 +25,7 @@
 3. Busca mensajes que empiecen con **`[Easy]`**
 
 4. Deberías ver:
+
    ```
    [Easy] Extension activating...
    [Easy] Extension activated successfully!
@@ -35,10 +36,12 @@
    ```
 
    **Si ves:**
+
    ```
    [Easy] Language ID: plaintext
    [Easy] Not an .easy file, skipping decorations
    ```
+
    → El archivo NO está siendo detectado como .easy (ve al Paso 1)
 
 ### Paso 3: Asegúrate de estar en la ventana correcta
@@ -64,23 +67,24 @@ Si el archivo `test-example.easy` no existe o está en el lugar incorrecto:
    - **IMPORTANTE:** Asegúrate de que termine en `.easy`
 
 5. Escribe en el archivo:
+
    ```
    Tema: Prueba de colores
-   
+
    #todo Tarea pendiente
    #doing En progreso
    #done Completado
-   
+
    #alta Prioridad alta
    #media Prioridad media
-   
+
    fecha: 2026-02-28
-   
+
    ## Subtítulo nivel 1
    ### Subtítulo nivel 2
-   
+
    >> Texto destacado
-   
+
    /@usuario Mención
    ```
 
@@ -95,11 +99,13 @@ Si después de todo esto sigues sin ver colores:
 2. **Abre una terminal** en `C:\DEV\EasyLanguage`
 
 3. **Ejecuta:**
+
    ```bash
    npm install
    ```
 
 4. **Luego ejecuta:**
+
    ```bash
    code .
    ```

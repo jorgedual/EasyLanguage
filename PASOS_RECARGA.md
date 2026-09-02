@@ -39,7 +39,7 @@ Después de recargar, verifica en la ventana de desarrollo:
 2. **TODOS** estos elementos deberían tener colores:
    - ✅ `Tema:` → Fondo azul con texto claro
    - ✅ `##` → Amarillo claro
-   - ✅ `###` → Verde claro  
+   - ✅ `###` → Verde claro
    - ✅ `#todo` → Fondo amarillo con texto negro
    - ✅ `#doing` → Fondo azul con texto blanco
    - ✅ `#done` → Fondo verde con texto blanco
@@ -67,6 +67,7 @@ Si después de recargar sigues sin ver los colores:
 En la esquina inferior derecha de VS Code, debe decir **"Easy"** (el lenguaje del archivo).
 
 Si dice "Plain Text" o algo diferente:
+
 - Haz clic en el lenguaje (esquina inferior derecha)
 - Busca "Easy" en la lista
 - Selecciónalo

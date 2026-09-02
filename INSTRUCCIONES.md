@@ -4,7 +4,7 @@
 
 Se han corregido los siguientes problemas críticos:
 
-1. ✅ **package.json** - Línea 14: Eliminado el espacio en `"onLanguage:easy"` 
+1. ✅ **package.json** - Línea 14: Eliminado el espacio en `"onLanguage:easy"`
 2. ✅ **package.json** - Activación universal: Cambiado a `"*"` para que la extensión se active al inicio
 3. ✅ **package.json** - Agregado comando faltante `extension.insertCurrentDate` en la sección commands
 4. ✅ **extension.js** - Eliminado código duplicado de la función `deactivate()` (líneas 566-567)
@@ -41,11 +41,13 @@ Se han corregido los siguientes problemas críticos:
 Si ya tienes el archivo `.vsix` o quieres crear uno nuevo:
 
 1. **Instalar vsce (si no lo tienes)**
+
    ```bash
    npm install -g @vscode/vsce
    ```
 
 2. **Empaquetar la extensión**
+
    ```bash
    cd C:\DEV\EasyLanguage
    vsce package
@@ -53,6 +55,7 @@ Si ya tienes el archivo `.vsix` o quieres crear uno nuevo:
    - Esto creará un archivo `easy-0.0.2.vsix`
 
 3. **Instalar la extensión**
+
    ```bash
    code --install-extension easy-0.0.2.vsix
    ```
@@ -139,7 +142,7 @@ Línea separadora
 
 ## 🎉 ¡Listo!
 
-Tu extensión ahora está completamente funcional y lista para usar. 
+Tu extensión ahora está completamente funcional y lista para usar.
 
 Si encuentras algún problema o quieres agregar nuevas funcionalidades, revisa los comentarios en el código para entender cómo funcionan las decoraciones y comandos.
 

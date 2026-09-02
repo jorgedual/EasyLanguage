@@ -22,6 +22,10 @@ Thumbs.db
 # Test coverage
 coverage/
 
+# Compiled output
+out/
+dist/
+
 # Temporary files
 *.tmp
 .cache/
