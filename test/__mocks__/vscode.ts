@@ -55,6 +55,29 @@ export const Uri = {
   file: jest.fn((path: string): { fsPath: string } => ({ fsPath: path })),
 };
 
+export class DocumentSymbol {
+  readonly children: DocumentSymbol[] = [];
+
+  constructor(
+    readonly name: string,
+    readonly detail: string,
+    readonly kind: unknown,
+    readonly range: Range,
+    readonly selectionRange: Range
+  ) {}
+}
+
+export const SymbolKind = {
+  Module: 2,
+  Class: 4,
+  Method: 6,
+  Property: 7,
+};
+
+export class FoldingRange {
+  constructor(readonly start: number, readonly end: number, readonly kind?: unknown) {}
+}
+
 export interface DecorationOptions {
   range: Range;
   hoverMessage?: string;
@@ -178,6 +201,18 @@ export const languages = {
       return new Disposable();
     }
   ),
+
+  registerDocumentSymbolProvider: jest.fn(
+    (_selector: string, _provider: unknown): Disposable => {
+      return new Disposable();
+    }
+  ),
+
+  registerFoldingRangeProvider: jest.fn(
+    (_selector: string, _provider: unknown): Disposable => {
+      return new Disposable();
+    }
+  ),
 };
 
 export const TextEditorRevealType = {
@@ -234,6 +269,8 @@ export function resetVscodeMock(): void {
   commands.registerCommand.mockClear();
   languages.registerCompletionItemProvider.mockClear();
   languages.registerDocumentFormattingEditProvider.mockClear();
+  languages.registerDocumentSymbolProvider.mockClear();
+  languages.registerFoldingRangeProvider.mockClear();
   window.showTextDocument.mockClear().mockImplementation(() => Promise.resolve({}));
   Uri.file.mockClear().mockImplementation((path: string) => ({ fsPath: path }));
   createdDecorationTypes.length = 0;

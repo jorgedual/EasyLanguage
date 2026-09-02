@@ -7,6 +7,7 @@ import { buildDecorationRules } from "./patterns";
 import { loadConfig, watchConfig } from "./config";
 import { registerCompletionProviders } from "./completions";
 import { registerFormattingProvider } from "./format";
+import { registerOutlineProviders } from "./outline";
 import type { EasyLanguageConfig } from "./types";
 import { debounce, isSupportedLanguage, logError, logInfo, validateEditor } from "./utils";
 
@@ -73,6 +74,7 @@ export function activate(context: vscode.ExtensionContext): void {
     registerTaskCommands(context, () => currentConfig);
     registerCompletionProviders(context, () => currentConfig);
     registerFormattingProvider(context);
+    registerOutlineProviders(context, () => currentConfig);
 
     logInfo("EasyLanguage extension activated successfully");
   } catch (error) {

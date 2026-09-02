@@ -39,7 +39,9 @@ describe("extension", () => {
       expect(vscode.commands.registerCommand).toHaveBeenCalledTimes(11);
       expect(vscode.languages.registerCompletionItemProvider).toHaveBeenCalledTimes(2);
       expect(vscode.languages.registerDocumentFormattingEditProvider).toHaveBeenCalledTimes(2);
-      expect(context.subscriptions).toHaveLength(18);
+      expect(vscode.languages.registerDocumentSymbolProvider).toHaveBeenCalledTimes(2);
+      expect(vscode.languages.registerFoldingRangeProvider).toHaveBeenCalledTimes(2);
+      expect(context.subscriptions).toHaveLength(22);
     });
 
     it("uses custom tags from settings", () => {

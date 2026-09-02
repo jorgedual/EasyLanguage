@@ -97,13 +97,13 @@ tarea; el check se sincroniza al llegar a `#done`.
 
 ## Fase 3 — F6: Outline y folding
 
-- [ ] Puro `src/outline/index.ts`:
+- [x] Puro `src/outline/index.ts`:
   - `computeDocumentSymbols(lines)`: `Tema:` → nivel 1 (kind `Module`),
     `#` → 2, `##` → 3, `###` → 4 (con rango completo hasta el siguiente nivel)
   - `computeFoldingRanges(lines)`: pliegue de cada bloque de título
-- [ ] Providers adapter: `DocumentSymbolProvider` + `FoldingRangeProvider`
+- [x] Providers adapter: `DocumentSymbolProvider` + `FoldingRangeProvider`
       para `easy` y `plaintext`
-- [ ] Sin config nueva (VS Code ya tiene toggles globales de outline)
+- [x] Sin config nueva (VS Code ya tiene toggles globales de outline)
 
 **Tests:** jerarquía (Tema/#/##/### anidados), títulos con tags no confunden
 (`#todo` no es símbolo), rangos de plegado correctos, documento vacío.
